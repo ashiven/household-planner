@@ -7,7 +7,7 @@ import (
 	"github.com/bigkevmcd/go-configparser"
 )
 
-const CONFIG_PATH = "config.ini.local"
+const configPath = "config.ini.local"
 
 type Config struct {
 	Members      []*Member
@@ -17,7 +17,7 @@ type Config struct {
 }
 
 func NewConfig() *Config {
-	parser, err := configparser.NewConfigParserFromFile(CONFIG_PATH)
+	parser, err := configparser.NewConfigParserFromFile(configPath)
 	if err != nil {
 		fmt.Println(err.Error())
 	}

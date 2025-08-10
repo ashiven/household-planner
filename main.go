@@ -10,10 +10,9 @@ func main() {
 
 	client := household.InitializeTwilioClient()
 
-	for _,member := range config.Members {
+	for _, member := range config.Members {
 		assignedTasks := household.GetAssignedTasks(config.DailyTasks, member)
 		dailyTaskMessage := household.CreateDailyTaskMessage(assignedTasks, member)
 		household.SendMessage(client, dailyTaskMessage, member.PhoneNumber)
 	}
-	
 }
