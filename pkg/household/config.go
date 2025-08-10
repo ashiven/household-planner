@@ -2,18 +2,19 @@ package household
 
 import (
 	"fmt"
+	"math/rand"
 
 	"github.com/bigkevmcd/go-configparser"
 )
 
-type HouseholdConfig struct {
+type Config struct {
 	Members      []*Member
 	DailyTasks   []*DailyTask
 	WeeklyTasks  []*WeeklyTask
 	MonthlyTasks []*MonthlyTask
 }
 
-func NewHouseholdConfig() *HouseholdConfig {
+func NewConfig() *Config {
 	parser, err := configparser.NewConfigParserFromFile("config.ini")
 	if err != nil {
 		fmt.Println(err.Error())
@@ -55,10 +56,31 @@ func NewHouseholdConfig() *HouseholdConfig {
 		monthlyTasks = append(monthlyTasks, NewMonthlyTask(monthlyTask))
 	}
 
-	return &HouseholdConfig{
+	return &Config{
 		Members:      members,
 		DailyTasks:   dailyTasks,
 		WeeklyTasks:  weeklyTasks,
 		MonthlyTasks: monthlyTasks,
+	}
+}
+
+func AssignTasks(tasks []Assignable, members []*Member) {
+	rand.Shuffle(len(tasks), func(i, j int) {
+		tasks[i], tasks[j] = tasks[j], tasks[i]
+	})
+
+	currentMemberIndex := 0
+	for _, task := range tasks {
+		task.SetAssignee(members[currentMemberIndex])
+		currentMemberIndex++
+		if currentMemberIndex >= len(members) {
+			currentMemberIndex = 0
+		}
+	}
+}
+
+func ClearTasks(tasks []Assignable) {
+	for _, task := range tasks {
+		task.SetAssignee(nil)
 	}
 }

@@ -30,8 +30,10 @@ func main() {
 	_ = twilioAccountSid
 	_ = twilioAuthToken
 
-	newMember := household.NewMember("member", "1234567890")
-	_ = newMember
+
+	householdConfig := household.NewConfig()
+	household.AssignTasks(household.GenericDaily(householdConfig.DailyTasks), householdConfig.Members)
+
 
 	client := twilio.NewRestClient()
 
