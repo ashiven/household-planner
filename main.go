@@ -14,7 +14,6 @@ func main() {
 
 		household.AssignTasksToAll(config.DailyTasks, config.Members)
 		household.AssignTasks(config.WeeklyTasks, currentMember, weeklyTasksPerDay)
-
 		// TODO:
 		// household.AssignTasks(config.MonthlyTasks, currentMember)
 
@@ -24,6 +23,10 @@ func main() {
 			dailyTaskMessage := household.CreateDailyTaskMessage(assignedTasks, member)
 			household.SendMessage(client, dailyTaskMessage, member.PhoneNumber)
 		}
+
+		household.ClearTasks(config.DailyTasks)
+		household.ClearTasks(config.WeeklyTasks)
+		household.ClearTasks(config.MonthlyTasks)
 
 		currentMemberIndex++
 		if currentMemberIndex >= len(config.Members) {

@@ -3,7 +3,9 @@
 // It includes the ability to create a new household member with a name and phone number.
 package household
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 var (
 	remainingWeeklyTasks  = []Assignable{}
@@ -14,15 +16,18 @@ func AssignTasksToAll[T Assignable](tasks []T, members []*Member) {
 	rand.Shuffle(len(tasks), func(i, j int) {
 		tasks[i], tasks[j] = tasks[j], tasks[i]
 	})
-	rand.Shuffle(len(members), func(i, j int) {
-		members[i], members[j] = members[j], members[i]
+
+	shuffledMembers := make([]*Member, len(members))
+	copy(shuffledMembers, members)
+	rand.Shuffle(len(shuffledMembers), func(i, j int) {
+		shuffledMembers[i], shuffledMembers[j] = shuffledMembers[j], shuffledMembers[i]
 	})
 
 	currentMemberIndex := 0
 	for _, task := range tasks {
-		task.SetAssignee(members[currentMemberIndex])
+		task.SetAssignee(shuffledMembers[currentMemberIndex])
 		currentMemberIndex++
-		if currentMemberIndex >= len(members) {
+		if currentMemberIndex >= len(shuffledMembers) {
 			currentMemberIndex = 0
 		}
 	}
