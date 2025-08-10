@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"household-planner/pkg/householdmember"
+	"household-planner/pkg/household"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -30,7 +30,7 @@ func main() {
 	_ = twilioAccountSid
 	_ = twilioAuthToken
 
-	newMember := householdmember.NewMember("member", "1234567890")
+	newMember := household.NewMember("member", "1234567890")
 	_ = newMember
 
 	client := twilio.NewRestClient()
