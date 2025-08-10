@@ -64,7 +64,7 @@ func NewConfig() *Config {
 	}
 }
 
-func AssignTasks(tasks []Assignable, members []*Member) {
+func AssignTasks[T Assignable](tasks []T, members []*Member) {
 	rand.Shuffle(len(tasks), func(i, j int) {
 		tasks[i], tasks[j] = tasks[j], tasks[i]
 	})
@@ -79,8 +79,19 @@ func AssignTasks(tasks []Assignable, members []*Member) {
 	}
 }
 
-func ClearTasks(tasks []Assignable) {
+func ClearTasks[T Assignable](tasks []T) {
 	for _, task := range tasks {
 		task.SetAssignee(nil)
 	}
+}
+
+func GetAssignedTasks[T Assignable](tasks []T, member *Member) []T {
+	assignedTasks := []T{}
+	for _, task := range tasks {
+		assignee := task.GetAssignee()
+		if assignee != nil && assignee.Name == member.Name {
+			assignedTasks = append(assignedTasks, task)
+		}
+	}
+	return assignedTasks
 }

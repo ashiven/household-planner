@@ -1,56 +1,23 @@
 package main
 
 import (
-	"fmt"
 	"household-planner/pkg/household"
-	"os"
-
-	"github.com/joho/godotenv"
-	"github.com/twilio/twilio-go"
-	api "github.com/twilio/twilio-go/rest/api/v2010"
 )
 
 const (
 	SENDER   = "+14155238886"
-	RECEIVER = "+4915901433811"
 )
 
-func getEnvVar(key string) string {
-	err := godotenv.Load(".env")
-	if err != nil {
-		fmt.Println("Error loading .env file")
-		os.Exit(1)
-	}
-	return os.Getenv(key)
-}
-
 func main() {
-	twilioAccountSid := getEnvVar("TWILIO_ACCOUNT_SID")
-	twilioAuthToken := getEnvVar("TWILIO_AUTH_TOKEN")
-	_ = twilioAccountSid
-	_ = twilioAuthToken
+	config := household.NewConfig()
+	household.AssignTasks(config.DailyTasks, config.Members)
 
+	client := household.InitializeTwilioClient()
 
-	householdConfig := household.NewConfig()
-	household.AssignTasks(household.GenericDaily(householdConfig.DailyTasks), householdConfig.Members)
-
-
-	client := twilio.NewRestClient()
-
-	params := &api.CreateMessageParams{}
-	params.SetFrom("whatsapp:" + SENDER)
-	params.SetTo("whatsapp:" + RECEIVER)
-	params.SetBody("Hier ist der Haushaltsplaner!\n")
-
-	resp, err := client.Api.CreateMessage(params)
-	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
-	} else {
-		if resp.Body != nil {
-			fmt.Println(*resp.Body)
-		} else {
-			fmt.Println(resp.Body)
-		}
+	for _,member := range config.Members {
+		assignedTasks := household.GetAssignedTasks(config.DailyTasks, member)
+		dailyTaskMessage := household.CreateDailyTaskMessage(assignedTasks, member)
+		household.SendMessage(client, dailyTaskMessage, SENDER, member.PhoneNumber)
 	}
+	
 }

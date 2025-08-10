@@ -40,14 +40,6 @@ func (task *DailyTask) GetAssignee() *Member {
 	return task.Assignee
 }
 
-func GenericDaily(tasks []*DailyTask) []Assignable {
-	converted := make([]Assignable, len(tasks))
-	for i, task := range tasks {
-		converted[i] = task
-	}
-	return converted
-}
-
 type WeeklyTask struct {
 	Name     string
 	Assignee *Member
@@ -68,14 +60,6 @@ func (task *WeeklyTask) GetAssignee() *Member {
 	return task.Assignee
 }
 
-func GenericWeekly(tasks []*WeeklyTask) []Assignable {
-	converted := make([]Assignable, len(tasks))
-	for i, task := range tasks {
-		converted[i] = task
-	}
-	return converted
-}
-
 type MonthlyTask struct {
 	Name     string
 	Assignee *Member
@@ -94,12 +78,4 @@ func (task *MonthlyTask) SetAssignee(member *Member) {
 
 func (task *MonthlyTask) GetAssignee() *Member {
 	return task.Assignee
-}
-
-func GenericMonthly(tasks []*MonthlyTask) []Assignable {
-	converted := make([]Assignable, len(tasks))
-	for i, task := range tasks {
-		converted[i] = task
-	}
-	return converted
 }
