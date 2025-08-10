@@ -47,9 +47,14 @@ func (household *Household) AssignMonthlyTasks(member *Member) {
 		household.remainingMonthlyTasks = append(household.remainingMonthlyTasks, household.MonthlyTasks...)
 	}
 
+	randomMember := household.Members[rand.Intn(len(household.Members))]
+	for randomMember.Name == member.Name {
+		randomMember = household.Members[rand.Intn(len(household.Members))]
+	}
+
 	if household.dayOfTheMonth%household.taskIntervalMonth == 0 {
 		task := household.remainingMonthlyTasks[0]
-		task.SetAssignee(member)
+		task.SetAssignee(randomMember)
 		household.remainingMonthlyTasks = household.remainingMonthlyTasks[1:]
 	}
 
