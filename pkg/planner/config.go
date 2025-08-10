@@ -1,4 +1,4 @@
-package household
+package planner
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ type Config struct {
 	MonthlyTasks []*MonthlyTask
 }
 
-func NewConfig() *Config {
+func LoadConfig() *Config {
 	parser, err := configparser.NewConfigParserFromFile(configPath)
 	if err != nil {
 		fmt.Println(err.Error())

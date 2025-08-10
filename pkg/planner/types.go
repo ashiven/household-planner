@@ -1,4 +1,42 @@
-package household
+package planner
+
+type Household struct {
+	config                *Config
+	Members               []*Member
+	DailyTasks            []*DailyTask
+	WeeklyTasks           []*WeeklyTask
+	MonthlyTasks          []*MonthlyTask
+	weeklyTasksPerDay     int
+	remainingWeeklyTasks  []*WeeklyTask
+	monthlyTasksPerDay    int
+	remainingMonthlyTasks []*MonthlyTask
+	dayOfTheMonth         int
+	taskIntervalMonth     int
+}
+
+func NewHousehold(config *Config) *Household {
+	return &Household{
+		config,
+		config.Members,
+		config.DailyTasks,
+		config.WeeklyTasks,
+		config.MonthlyTasks,
+		min(len(config.WeeklyTasks)/len(config.Members), 1),
+		[]*WeeklyTask{},
+		min(len(config.MonthlyTasks)/len(config.Members), 1),
+		[]*MonthlyTask{},
+		1,
+		30 / len(config.MonthlyTasks),
+	}
+}
+
+type HouseholdInterface interface {
+	AssignDailyTasks(household *Household)
+	AssignWeeklyTasks(household *Household)
+	AssignMonthlyTasks(household *Household)
+	GetAssignedTasks(household *Household, member *Member) []Assignable
+	ClearTasks(household *Household)
+}
 
 type Member struct {
 	Name        string

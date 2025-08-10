@@ -1,4 +1,4 @@
-package household
+package planner
 
 import "time"
 

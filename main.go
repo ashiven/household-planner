@@ -1,38 +1,33 @@
 package main
 
 import (
-	"household-planner/pkg/household"
+	"household-planner/pkg/planner"
 )
 
 func main() {
-	config := household.NewConfig()
-	weeklyTasksPerDay := len(config.WeeklyTasks) / len(config.Members)
+	config := planner.LoadConfig()
+	myHousehold := planner.NewHousehold(config)
 
 	currentMemberIndex := 0
 	for {
-		currentMember := config.Members[currentMemberIndex]
-
-		household.AssignTasksToAll(config.DailyTasks, config.Members)
-		household.AssignTasks(config.WeeklyTasks, currentMember, weeklyTasksPerDay)
-		// TODO:
-		// household.AssignTasks(config.MonthlyTasks, currentMember)
-
-		client := household.InitializeTwilioClient()
-		for _, member := range config.Members {
-			assignedTasks := household.GetAssignedTasks(config, member)
-			dailyTaskMessage := household.CreateDailyTaskMessage(assignedTasks, member)
-			household.SendMessage(client, dailyTaskMessage, member.PhoneNumber)
-		}
-
-		household.ClearTasks(config.DailyTasks)
-		household.ClearTasks(config.WeeklyTasks)
-		household.ClearTasks(config.MonthlyTasks)
-
+		currentMember := myHousehold.Members[currentMemberIndex]
 		currentMemberIndex++
-		if currentMemberIndex >= len(config.Members) {
+		if currentMemberIndex >= len(myHousehold.Members) {
 			currentMemberIndex = 0
 		}
 
-		household.WaitUntilNoon()
+		myHousehold.AssignDailyTasks()
+		myHousehold.AssignWeeklyTasks(currentMember)
+		myHousehold.AssignMonthlyTasks(currentMember)
+
+		client := planner.InitializeTwilioClient()
+		for _, member := range myHousehold.Members {
+			assignedTasks := myHousehold.GetAssignedTasks(member)
+			dailyTaskMessage := planner.CreateDailyTaskMessage(assignedTasks, member)
+			planner.SendMessage(client, dailyTaskMessage, member.PhoneNumber)
+		}
+
+		myHousehold.ClearTasks()
+		planner.WaitUntilNoon()
 	}
 }
