@@ -49,12 +49,12 @@ func SendMessage(client *twilio.RestClient, message string, receiver string) {
 	}
 }
 
-func CreateDailyTaskMessage(tasks []*DailyTask, member *Member) string {
+func CreateDailyTaskMessage[T Assignable](tasks []T, member *Member) string {
 	message := fmt.Sprintf("%s! Deine heutigen Aufgaben sind:\n", member.Name)
 
 	dailyTasks := "\n"
 	for _, task := range tasks {
-		dailyTasks += fmt.Sprintf("- %s\n", task.Name)
+		dailyTasks += fmt.Sprintf("- %s\n", task.GetName())
 	}
 
 	return message + dailyTasks

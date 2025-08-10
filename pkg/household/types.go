@@ -15,6 +15,7 @@ func NewMember(name string, phoneNumber string) *Member {
 type Assignable interface {
 	SetAssignee(member *Member)
 	GetAssignee() *Member
+	GetName() string
 }
 
 type DailyTask struct {
@@ -37,6 +38,10 @@ func (task *DailyTask) GetAssignee() *Member {
 	return task.Assignee
 }
 
+func (task *DailyTask) GetName() string {
+	return task.Name
+}
+
 type WeeklyTask struct {
 	Name     string
 	Assignee *Member
@@ -57,6 +62,10 @@ func (task *WeeklyTask) GetAssignee() *Member {
 	return task.Assignee
 }
 
+func (task *WeeklyTask) GetName() string {
+	return task.Name
+}
+
 type MonthlyTask struct {
 	Name     string
 	Assignee *Member
@@ -75,4 +84,8 @@ func (task *MonthlyTask) SetAssignee(member *Member) {
 
 func (task *MonthlyTask) GetAssignee() *Member {
 	return task.Assignee
+}
+
+func (task *MonthlyTask) GetName() string {
+	return task.Name
 }
