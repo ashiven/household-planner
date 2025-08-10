@@ -52,8 +52,8 @@ func CreateDailyTaskMessage(tasks []*DailyTask, member *Member) string {
 
 	dailyTasks := "\n"
 	for _, task := range tasks {
-		dailyTasks += fmt.Sprintf("- %s", task.Name)
+		dailyTasks += fmt.Sprintf("- %s\n", task.Name)
 	}
 
-	return message
+	return message + dailyTasks
 }
