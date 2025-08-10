@@ -9,6 +9,8 @@ import (
 	api "github.com/twilio/twilio-go/rest/api/v2010"
 )
 
+var SENDER = getEnvVar("WHATSAPP_SENDER")
+
 func getEnvVar(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -28,9 +30,9 @@ func InitializeTwilioClient() *twilio.RestClient {
 	return client
 }
 
-func SendMessage(client *twilio.RestClient, message string, sender string, receiver string) {
+func SendMessage(client *twilio.RestClient, message string, receiver string) {
 	params := &api.CreateMessageParams{}
-	params.SetFrom("whatsapp:" + sender)
+	params.SetFrom("whatsapp:" + SENDER)
 	params.SetTo("whatsapp:" + receiver)
 	params.SetBody(message)
 
