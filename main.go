@@ -29,8 +29,6 @@ func main() {
 	_ = twilioAccountSid
 	_ = twilioAuthToken
 
-	fmt.Println("Welcome to the Household Planner!")
-
 	client := twilio.NewRestClient()
 
 	params := &api.CreateMessageParams{}
