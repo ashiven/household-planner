@@ -3,79 +3,41 @@
 // It includes the ability to create a new household member with a name and phone number.
 package household
 
-type Member struct {
-	Name        string
-	PhoneNumber string
-}
+import "math/rand"
 
-func NewMember(name string, phoneNumber string) *Member {
-	return &Member{
-		Name:        name,
-		PhoneNumber: phoneNumber,
+func AssignTasksToAll[T Assignable](tasks []T, members []*Member) {
+	rand.Shuffle(len(tasks), func(i, j int) {
+		tasks[i], tasks[j] = tasks[j], tasks[i]
+	})
+
+	currentMemberIndex := 0
+	for _, task := range tasks {
+		task.SetAssignee(members[currentMemberIndex])
+		currentMemberIndex++
+		if currentMemberIndex >= len(members) {
+			currentMemberIndex = 0
+		}
 	}
 }
 
-type Assignable interface {
-	SetAssignee(member *Member)
-	GetAssignee() *Member
+func AssignTasks[T Assignable](tasks []T, member *Member) {
+	// TODO: weekly tasks are dynamically split into daily tasks so each member gets a fair share
+	// TODO: monthly tasks are split into daily tasks with spaced intervals so they are evenly spread across the month
 }
 
-type DailyTask struct {
-	Name     string
-	Assignee *Member
-}
-
-func NewDailyTask(name string) *DailyTask {
-	return &DailyTask{
-		Name:     name,
-		Assignee: nil,
+func ClearTasks[T Assignable](tasks []T) {
+	for _, task := range tasks {
+		task.SetAssignee(nil)
 	}
 }
 
-func (task *DailyTask) SetAssignee(member *Member) {
-	task.Assignee = member
-}
-
-func (task *DailyTask) GetAssignee() *Member {
-	return task.Assignee
-}
-
-type WeeklyTask struct {
-	Name     string
-	Assignee *Member
-}
-
-func NewWeeklyTask(name string) *WeeklyTask {
-	return &WeeklyTask{
-		Name:     name,
-		Assignee: nil,
+func GetAssignedTasks[T Assignable](tasks []T, member *Member) []T {
+	assignedTasks := []T{}
+	for _, task := range tasks {
+		assignee := task.GetAssignee()
+		if assignee != nil && assignee.Name == member.Name {
+			assignedTasks = append(assignedTasks, task)
+		}
 	}
-}
-
-func (task *WeeklyTask) SetAssignee(member *Member) {
-	task.Assignee = member
-}
-
-func (task *WeeklyTask) GetAssignee() *Member {
-	return task.Assignee
-}
-
-type MonthlyTask struct {
-	Name     string
-	Assignee *Member
-}
-
-func NewMonthlyTask(name string) *MonthlyTask {
-	return &MonthlyTask{
-		Name:     name,
-		Assignee: nil,
-	}
-}
-
-func (task *MonthlyTask) SetAssignee(member *Member) {
-	task.Assignee = member
-}
-
-func (task *MonthlyTask) GetAssignee() *Member {
-	return task.Assignee
+	return assignedTasks
 }
