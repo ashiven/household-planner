@@ -1,6 +1,16 @@
 import Table from "@mui/joy/Table";
 
-function MembersTable(members: any) {
+interface Member {
+  Name: string;
+  Phonenumber: string;
+}
+
+interface Task {
+  Name: string;
+  Assignee: string | null;
+}
+
+function MembersTable({ members }: { members: Member[] }) {
   return (
     <Table color="primary" variant="soft" aria-label="basic table">
       <thead>
@@ -10,20 +20,18 @@ function MembersTable(members: any) {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Jannik</td>
-          <td>2134902304</td>
-        </tr>
-        <tr>
-          <td>Luka</td>
-          <td>192030213</td>
-        </tr>
+        {members.map((member, _idx) => (
+          <tr>
+            <td>{member.Name}</td>
+            <td>{member.Phonenumber}</td>
+          </tr>
+        ))}
       </tbody>
     </Table>
   );
 }
 
-function TaskTable(tasks: any) {
+function TaskTable({ tasks }: { tasks: Task[] }) {
   return (
     <Table color="primary" variant="soft" aria-label="basic table">
       <thead>
@@ -32,12 +40,11 @@ function TaskTable(tasks: any) {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Putzen</td>
-        </tr>
-        <tr>
-          <td>Wischen</td>
-        </tr>
+        {tasks.map((task, _idx) => (
+          <tr>
+            <td>{task.Name}</td>
+          </tr>
+        ))}
       </tbody>
     </Table>
   );

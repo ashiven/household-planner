@@ -23,7 +23,7 @@ func updateMembers(w http.ResponseWriter, r *http.Request) {
 	config.File.RemoveSection("Members")
 	config.File.AddSection("Members")
 	for _, member := range updatedMembers {
-		config.File.Set("Members", member.Name, member.PhoneNumber)
+		config.File.Set("Members", member.Name, member.Phonenumber)
 	}
 	config.File.SaveWithDelimiter(config.Filename, ":")
 }

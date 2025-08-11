@@ -40,13 +40,13 @@ type HouseholdInterface interface {
 
 type Member struct {
 	Name        string
-	PhoneNumber string
+	Phonenumber string
 }
 
-func NewMember(name string, phoneNumber string) *Member {
+func NewMember(name string, phonenumber string) *Member {
 	return &Member{
 		Name:        name,
-		PhoneNumber: phoneNumber,
+		Phonenumber: phonenumber,
 	}
 }
 

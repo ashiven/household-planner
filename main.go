@@ -29,7 +29,7 @@ func main() {
 		for _, member := range myHousehold.Members {
 			assignedTasks := myHousehold.GetAssignedTasks(member)
 			dailyTaskMessage := planner.CreateDailyTaskMessage(assignedTasks, member)
-			planner.SendMessage(client, dailyTaskMessage, member.PhoneNumber)
+			planner.SendMessage(client, dailyTaskMessage, member.Phonenumber)
 		}
 
 		myHousehold.ClearTasks()

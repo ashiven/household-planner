@@ -8,4 +8,10 @@ export default defineConfig({
     tanstackRouter({ target: "react", autoCodeSplitting: true }),
     react(),
   ],
+  server: {
+    proxy: {
+      "/members": "http://localhost:8080",
+      "/tasks": "http://localhost:8080",
+    },
+  },
 });
