@@ -35,7 +35,7 @@ type HouseholdInterface interface {
 	AssignWeeklyTasks(household *Household)
 	AssignMonthlyTasks(household *Household)
 	GetAssignedTasks(household *Household, member *Member) []Assignable
-	ClearTasks(household *Household)
+	ClearAssignments(household *Household)
 }
 
 type Member struct {

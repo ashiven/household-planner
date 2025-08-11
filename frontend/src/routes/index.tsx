@@ -1,3 +1,4 @@
+import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import Sheet from "@mui/joy/Sheet";
 
@@ -60,28 +61,45 @@ function Index() {
     return <span>Error loading data: {error.message}</span>;
   }
 
+  const [membersExpanded, setMembersExpanded] = React.useState(true);
+  const [dailyExpanded, setDailyExpanded] = React.useState(true);
+  const [weeklyExpanded, setWeeklyExpanded] = React.useState(true);
+  const [monthlyExpanded, setMonthlyExpanded] = React.useState(true);
+
   return (
-    <Sheet variant="soft" color="primary" sx={{ p: 4 }}>
+    <Sheet variant="soft" color="neutral" sx={{ p: 4, minHeight: "100vh" }}>
       <AccordionGroup size="lg">
-        <Accordion expanded>
+        <Accordion
+          expanded={membersExpanded}
+          onChange={() => setMembersExpanded(!membersExpanded)}
+        >
           <AccordionSummary>Mitglieder</AccordionSummary>
           <AccordionDetails>
             <MembersTable members={data.members} />
           </AccordionDetails>
         </Accordion>
-        <Accordion expanded>
+        <Accordion
+          expanded={dailyExpanded}
+          onChange={() => setDailyExpanded(!dailyExpanded)}
+        >
           <AccordionSummary>Tägliche Aufgaben</AccordionSummary>
           <AccordionDetails>
             <TaskTable tasks={data.daily} />
           </AccordionDetails>
         </Accordion>
-        <Accordion expanded>
+        <Accordion
+          expanded={weeklyExpanded}
+          onChange={() => setWeeklyExpanded(!weeklyExpanded)}
+        >
           <AccordionSummary>Wöchentliche Aufgaben</AccordionSummary>
           <AccordionDetails>
             <TaskTable tasks={data.weekly} />
           </AccordionDetails>
         </Accordion>
-        <Accordion expanded>
+        <Accordion
+          expanded={monthlyExpanded}
+          onChange={() => setMonthlyExpanded(!monthlyExpanded)}
+        >
           <AccordionSummary>Monatliche Aufgaben</AccordionSummary>
           <AccordionDetails>
             <TaskTable tasks={data.monthly} />

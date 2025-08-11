@@ -64,7 +64,7 @@ func (household *Household) AssignMonthlyTasks(member *Member) {
 	}
 }
 
-func (household *Household) ClearTasks() {
+func (household *Household) ClearAssignments() {
 	for _, task := range household.DailyTasks {
 		task.SetAssignee(nil)
 	}

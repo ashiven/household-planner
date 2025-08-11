@@ -21,6 +21,7 @@ func main() {
 			currentMemberIndex = 0
 		}
 
+		myHousehold.ClearAssignments()
 		myHousehold.AssignDailyTasks()
 		myHousehold.AssignWeeklyTasks(currentMember)
 		myHousehold.AssignMonthlyTasks(currentMember)
@@ -32,7 +33,6 @@ func main() {
 			planner.SendMessage(client, dailyTaskMessage, member.Phonenumber)
 		}
 
-		myHousehold.ClearTasks()
 		planner.WaitUntilNoon()
 	}
 }
