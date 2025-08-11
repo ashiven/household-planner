@@ -18,11 +18,7 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <CssVarsProvider
-        defaultMode="dark"
-        modeStorageKey="joy-mode-scheme-dark"
-        disableNestedContext
-      >
+      <CssVarsProvider defaultMode="dark">
         <RouterProvider router={router} />
       </CssVarsProvider>
     </StrictMode>,

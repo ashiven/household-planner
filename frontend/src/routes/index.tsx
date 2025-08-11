@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import * as React from "react";
-import Button from "@mui/joy/Button";
-import Stack from "@mui/joy/Stack";
+import Sheet from "@mui/joy/Sheet";
+
+import Accordion from "@mui/joy/Accordion";
+import AccordionDetails from "@mui/joy/AccordionDetails";
+import AccordionGroup from "@mui/joy/AccordionGroup";
+import AccordionSummary from "@mui/joy/AccordionSummary";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -9,11 +12,25 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <Stack spacing={3} sx={{ justifyContent: "center", alignItems: "center" }}>
-      <Button variant="solid">Members</Button>
-      <Button variant="solid">Daily Tasks</Button>
-      <Button variant="solid">Weekly Tasks</Button>
-      <Button variant="solid">Monthly Tasks</Button>
-    </Stack>
+    <Sheet variant="soft" color="primary" sx={{ p: 4 }}>
+      <AccordionGroup size="lg">
+        <Accordion>
+          <AccordionSummary>Members</AccordionSummary>
+          <AccordionDetails>Content</AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary>Daily Tasks</AccordionSummary>
+          <AccordionDetails>Content</AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary>Weekly Tasks</AccordionSummary>
+          <AccordionDetails>Content</AccordionDetails>
+        </Accordion>
+        <Accordion>
+          <AccordionSummary>Monthly Tasks</AccordionSummary>
+          <AccordionDetails>Content</AccordionDetails>
+        </Accordion>
+      </AccordionGroup>
+    </Sheet>
   );
 }
