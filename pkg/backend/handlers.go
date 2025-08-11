@@ -2,6 +2,7 @@ package backend
 
 import (
 	"encoding/json"
+	"fmt"
 	"household-planner/pkg/planner"
 	"net/http"
 )
@@ -12,27 +13,37 @@ func SetConfig(config *planner.Config) {
 	Config = config
 }
 
+func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string, setOption func(config *planner.Config, option T)) {
+	var updatedItems []T
+	if err := json.NewDecoder(r.Body).Decode(&updatedItems); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	Config.File.RemoveSection(section)
+	Config.File.AddSection(section)
+
+	for _, item := range updatedItems {
+		setOption(Config, item)
+	}
+
+	if err := Config.File.SaveWithDelimiter(Config.Filename, ":"); err != nil {
+		fmt.Fprintf(w, "Error saving config: %v", err)
+		return
+	}
+
+	// Reload the config to update the in-memory representation
+	Config = planner.LoadConfig()
+}
+
 func getMembers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Config.Members)
 }
 
 func updateMembers(w http.ResponseWriter, r *http.Request) {
-	updatedMembers := []planner.Member{}
-	err := json.NewDecoder(r.Body).Decode(&updatedMembers)
-	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
-	}
-
-	Config.File.RemoveSection("Members")
-	Config.File.AddSection("Members")
-	for _, member := range updatedMembers {
+	handleUpdate(w, r, "Members", func(config *planner.Config, member planner.Member) {
 		Config.File.Set("Members", member.Name, member.Phonenumber)
-	}
-	Config.File.SaveWithDelimiter(Config.Filename, ":")
-
-	// Reload the config to update the in-memory representation
-	Config = planner.LoadConfig()
+	})
 }
 
 func getDailyTasks(w http.ResponseWriter, r *http.Request) {
@@ -40,20 +51,9 @@ func getDailyTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateDailyTasks(w http.ResponseWriter, r *http.Request) {
-	updatedDailyTasks := []planner.DailyTask{}
-	err := json.NewDecoder(r.Body).Decode(&updatedDailyTasks)
-	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
-	}
-
-	Config.File.RemoveSection("Daily Tasks")
-	Config.File.AddSection("Daily Tasks")
-	for _, dailyTask := range updatedDailyTasks {
-		Config.File.Set("Daily Tasks", dailyTask.Name, "")
-	}
-	Config.File.SaveWithDelimiter(Config.Filename, ":")
-	Config = planner.LoadConfig()
+	handleUpdate(w, r, "Daily Tasks", func(config *planner.Config, task planner.DailyTask) {
+		Config.File.Set("Daily Tasks", task.Name, "")
+	})
 }
 
 func getWeeklyTasks(w http.ResponseWriter, r *http.Request) {
@@ -61,20 +61,9 @@ func getWeeklyTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateWeeklyTasks(w http.ResponseWriter, r *http.Request) {
-	updatedWeeklyTasks := []planner.WeeklyTask{}
-	err := json.NewDecoder(r.Body).Decode(&updatedWeeklyTasks)
-	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
-	}
-
-	Config.File.RemoveSection("Weekly Tasks")
-	Config.File.AddSection("Weekly Tasks")
-	for _, weeklyTask := range updatedWeeklyTasks {
-		Config.File.Set("Weekly Tasks", weeklyTask.Name, "")
-	}
-	Config.File.SaveWithDelimiter(Config.Filename, ":")
-	Config = planner.LoadConfig()
+	handleUpdate(w, r, "Weekly Tasks", func(config *planner.Config, task planner.WeeklyTask) {
+		Config.File.Set("Weekly Tasks", task.Name, "")
+	})
 }
 
 func getMonthlyTasks(w http.ResponseWriter, r *http.Request) {
@@ -82,18 +71,7 @@ func getMonthlyTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateMonthlyTasks(w http.ResponseWriter, r *http.Request) {
-	updatedMonthlyTasks := []*planner.MonthlyTask{}
-	err := json.NewDecoder(r.Body).Decode(&updatedMonthlyTasks)
-	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
-		return
-	}
-
-	Config.File.RemoveSection("Monthly Tasks")
-	Config.File.AddSection("Monthly Tasks")
-	for _, monthlyTask := range updatedMonthlyTasks {
-		Config.File.Set("Monthly Tasks", monthlyTask.Name, "")
-	}
-	Config.File.SaveWithDelimiter(Config.Filename, ":")
-	Config = planner.LoadConfig()
+	handleUpdate(w, r, "Monthly Tasks", func(config *planner.Config, task planner.MonthlyTask) {
+		Config.File.Set("Monthly Tasks", task.Name, "")
+	})
 }
