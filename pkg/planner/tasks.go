@@ -34,7 +34,8 @@ func (household *Household) AssignWeeklyTasks(member *Member) {
 	}
 
 	amountAdded := 0
-	for amountAdded < household.weeklyTasksPerDay && len(household.remainingWeeklyTasks) > 0 {
+	weeklyTasksPerDay := min(len(household.WeeklyTasks)/len(household.Members), 1)
+	for amountAdded < weeklyTasksPerDay && len(household.remainingWeeklyTasks) > 0 {
 		task := household.remainingWeeklyTasks[0]
 		task.SetAssignee(member)
 		household.remainingWeeklyTasks = household.remainingWeeklyTasks[1:]

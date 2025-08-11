@@ -2,7 +2,6 @@ package backend
 
 import (
 	"encoding/json"
-	"fmt"
 	"household-planner/pkg/planner"
 	"net/http"
 )
@@ -13,9 +12,9 @@ func SetConfig(config *planner.Config) {
 	Config = config
 }
 
-func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string, setOption func(config *planner.Config, option T)) {
-	var updatedItems []T
-	if err := json.NewDecoder(r.Body).Decode(&updatedItems); err != nil {
+func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string, setOption func(option T)) {
+	var updatedOptions []T
+	if err := json.NewDecoder(r.Body).Decode(&updatedOptions); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
@@ -23,12 +22,12 @@ func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string,
 	Config.File.RemoveSection(section)
 	Config.File.AddSection(section)
 
-	for _, item := range updatedItems {
-		setOption(Config, item)
+	for _, option := range updatedOptions {
+		setOption(option)
 	}
 
 	if err := Config.File.SaveWithDelimiter(Config.Filename, ":"); err != nil {
-		fmt.Fprintf(w, "Error saving config: %v", err)
+		http.Error(w, "Error saving config: %v", http.StatusInternalServerError)
 		return
 	}
 
@@ -41,7 +40,7 @@ func getMembers(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateMembers(w http.ResponseWriter, r *http.Request) {
-	handleUpdate(w, r, "Members", func(config *planner.Config, member planner.Member) {
+	handleUpdate(w, r, "Members", func(member planner.Member) {
 		Config.File.Set("Members", member.Name, member.Phonenumber)
 	})
 }
@@ -51,7 +50,7 @@ func getDailyTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateDailyTasks(w http.ResponseWriter, r *http.Request) {
-	handleUpdate(w, r, "Daily Tasks", func(config *planner.Config, task planner.DailyTask) {
+	handleUpdate(w, r, "Daily Tasks", func(task planner.DailyTask) {
 		Config.File.Set("Daily Tasks", task.Name, "")
 	})
 }
@@ -61,7 +60,7 @@ func getWeeklyTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateWeeklyTasks(w http.ResponseWriter, r *http.Request) {
-	handleUpdate(w, r, "Weekly Tasks", func(config *planner.Config, task planner.WeeklyTask) {
+	handleUpdate(w, r, "Weekly Tasks", func(task planner.WeeklyTask) {
 		Config.File.Set("Weekly Tasks", task.Name, "")
 	})
 }
@@ -71,7 +70,7 @@ func getMonthlyTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateMonthlyTasks(w http.ResponseWriter, r *http.Request) {
-	handleUpdate(w, r, "Monthly Tasks", func(config *planner.Config, task planner.MonthlyTask) {
+	handleUpdate(w, r, "Monthly Tasks", func(task planner.MonthlyTask) {
 		Config.File.Set("Monthly Tasks", task.Name, "")
 	})
 }

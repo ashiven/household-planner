@@ -6,9 +6,7 @@ type Household struct {
 	DailyTasks            []*DailyTask
 	WeeklyTasks           []*WeeklyTask
 	MonthlyTasks          []*MonthlyTask
-	weeklyTasksPerDay     int
 	remainingWeeklyTasks  []*WeeklyTask
-	monthlyTasksPerDay    int
 	remainingMonthlyTasks []*MonthlyTask
 	dayOfTheMonth         int
 	taskIntervalMonth     int
@@ -21,9 +19,7 @@ func NewHousehold(config *Config) *Household {
 		config.DailyTasks,
 		config.WeeklyTasks,
 		config.MonthlyTasks,
-		min(len(config.WeeklyTasks)/len(config.Members), 1),
 		[]*WeeklyTask{},
-		min(len(config.MonthlyTasks)/len(config.Members), 1),
 		[]*MonthlyTask{},
 		1,
 		30 / len(config.MonthlyTasks),
