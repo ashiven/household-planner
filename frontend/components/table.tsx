@@ -7,7 +7,7 @@ interface Member {
 
 interface Task {
   Name: string;
-  Assignee: string | null;
+  Assignee: Member | null;
 }
 
 function MembersTable({ members }: { members: Member[] }) {
@@ -36,13 +36,15 @@ function TaskTable({ tasks }: { tasks: Task[] }) {
     <Table color="primary" variant="soft" aria-label="basic table">
       <thead>
         <tr>
-          <th>Aufgabe</th>
+          <th style={{ width: "40%" }}>Aufgabe</th>
+          <th>Zugewiesen</th>
         </tr>
       </thead>
       <tbody>
         {tasks.map((task, _idx) => (
           <tr>
             <td>{task.Name}</td>
+            <td>{task.Assignee?.Name ?? ""}</td>
           </tr>
         ))}
       </tbody>

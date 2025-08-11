@@ -12,7 +12,7 @@ func SetConfig(config *planner.Config) {
 	Config = config
 }
 
-func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string, setOption func(option T)) {
+func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string, setConfigOption func(option T)) {
 	var updatedOptions []T
 	if err := json.NewDecoder(r.Body).Decode(&updatedOptions); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -23,7 +23,7 @@ func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string,
 	Config.File.AddSection(section)
 
 	for _, option := range updatedOptions {
-		setOption(option)
+		setConfigOption(option)
 	}
 
 	if err := Config.File.SaveWithDelimiter(Config.Filename, ":"); err != nil {
@@ -31,7 +31,7 @@ func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string,
 		return
 	}
 
-	// Reload the config to update the in-memory representation
+	// Reload the config file into memory
 	Config = planner.LoadConfig()
 }
 
