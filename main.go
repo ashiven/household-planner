@@ -8,10 +8,12 @@ import (
 
 func main() {
 	fmt.Println("[INFO] Starting Household Planner...")
-	go backend.StartServer()
 
 	config := planner.LoadConfig()
 	myHousehold := planner.NewHousehold(config)
+
+	backend.SetConfig(config)
+	go backend.StartServer()
 
 	currentMemberIndex := 0
 	for {

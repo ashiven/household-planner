@@ -6,9 +6,14 @@ import (
 	"net/http"
 )
 
+var Config *planner.Config
+
+func SetConfig(config *planner.Config) {
+	Config = config
+}
+
 func getMembers(w http.ResponseWriter, r *http.Request) {
-	config := planner.LoadConfig()
-	json.NewEncoder(w).Encode(config.Members)
+	json.NewEncoder(w).Encode(Config.Members)
 }
 
 func updateMembers(w http.ResponseWriter, r *http.Request) {
@@ -19,18 +24,19 @@ func updateMembers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	config := planner.LoadConfig()
-	config.File.RemoveSection("Members")
-	config.File.AddSection("Members")
+	Config.File.RemoveSection("Members")
+	Config.File.AddSection("Members")
 	for _, member := range updatedMembers {
-		config.File.Set("Members", member.Name, member.Phonenumber)
+		Config.File.Set("Members", member.Name, member.Phonenumber)
 	}
-	config.File.SaveWithDelimiter(config.Filename, ":")
+	Config.File.SaveWithDelimiter(Config.Filename, ":")
+
+	// Reload the config to update the in-memory representation
+	Config = planner.LoadConfig()
 }
 
 func getDailyTasks(w http.ResponseWriter, r *http.Request) {
-	config := planner.LoadConfig()
-	json.NewEncoder(w).Encode(config.DailyTasks)
+	json.NewEncoder(w).Encode(Config.DailyTasks)
 }
 
 func updateDailyTasks(w http.ResponseWriter, r *http.Request) {
@@ -41,18 +47,17 @@ func updateDailyTasks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	config := planner.LoadConfig()
-	config.File.RemoveSection("Daily Tasks")
-	config.File.AddSection("Daily Tasks")
+	Config.File.RemoveSection("Daily Tasks")
+	Config.File.AddSection("Daily Tasks")
 	for _, dailyTask := range updatedDailyTasks {
-		config.File.Set("Daily Tasks", dailyTask.Name, "")
+		Config.File.Set("Daily Tasks", dailyTask.Name, "")
 	}
-	config.File.SaveWithDelimiter(config.Filename, ":")
+	Config.File.SaveWithDelimiter(Config.Filename, ":")
+	Config = planner.LoadConfig()
 }
 
 func getWeeklyTasks(w http.ResponseWriter, r *http.Request) {
-	config := planner.LoadConfig()
-	json.NewEncoder(w).Encode(config.WeeklyTasks)
+	json.NewEncoder(w).Encode(Config.WeeklyTasks)
 }
 
 func updateWeeklyTasks(w http.ResponseWriter, r *http.Request) {
@@ -63,18 +68,17 @@ func updateWeeklyTasks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	config := planner.LoadConfig()
-	config.File.RemoveSection("Weekly Tasks")
-	config.File.AddSection("Weekly Tasks")
+	Config.File.RemoveSection("Weekly Tasks")
+	Config.File.AddSection("Weekly Tasks")
 	for _, weeklyTask := range updatedWeeklyTasks {
-		config.File.Set("Weekly Tasks", weeklyTask.Name, "")
+		Config.File.Set("Weekly Tasks", weeklyTask.Name, "")
 	}
-	config.File.SaveWithDelimiter(config.Filename, ":")
+	Config.File.SaveWithDelimiter(Config.Filename, ":")
+	Config = planner.LoadConfig()
 }
 
 func getMonthlyTasks(w http.ResponseWriter, r *http.Request) {
-	config := planner.LoadConfig()
-	json.NewEncoder(w).Encode(config.MonthlyTasks)
+	json.NewEncoder(w).Encode(Config.MonthlyTasks)
 }
 
 func updateMonthlyTasks(w http.ResponseWriter, r *http.Request) {
@@ -85,11 +89,11 @@ func updateMonthlyTasks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	config := planner.LoadConfig()
-	config.File.RemoveSection("Monthly Tasks")
-	config.File.AddSection("Monthly Tasks")
+	Config.File.RemoveSection("Monthly Tasks")
+	Config.File.AddSection("Monthly Tasks")
 	for _, monthlyTask := range updatedMonthlyTasks {
-		config.File.Set("Monthly Tasks", monthlyTask.Name, "")
+		Config.File.Set("Monthly Tasks", monthlyTask.Name, "")
 	}
-	config.File.SaveWithDelimiter(config.Filename, ":")
+	Config.File.SaveWithDelimiter(Config.Filename, ":")
+	Config = planner.LoadConfig()
 }
