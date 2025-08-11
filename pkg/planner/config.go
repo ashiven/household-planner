@@ -9,6 +9,8 @@ import (
 const configPath = "config.ini.local"
 
 type Config struct {
+	Filename     string
+	File         *configparser.ConfigParser
 	Members      []*Member
 	DailyTasks   []*DailyTask
 	WeeklyTasks  []*WeeklyTask
@@ -58,6 +60,8 @@ func LoadConfig() *Config {
 	}
 
 	return &Config{
+		Filename:     configPath,
+		File:         parser,
 		Members:      members,
 		DailyTasks:   dailyTasks,
 		WeeklyTasks:  weeklyTasks,

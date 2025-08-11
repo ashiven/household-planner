@@ -36,17 +36,18 @@ func SendMessage(client *twilio.RestClient, message string, receiver string) {
 	params.SetTo("whatsapp:" + receiver)
 	params.SetBody(message)
 
-	resp, err := client.Api.CreateMessage(params)
-	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
-	} else {
-		if resp.Body != nil {
-			fmt.Println(*resp.Body)
-		} else {
-			fmt.Println(resp.Body)
-		}
-	}
+	// TODO: uncomment after debugging
+	//resp, err := client.Api.CreateMessage(params)
+	//if err != nil {
+	//	fmt.Println(err.Error())
+	//	os.Exit(1)
+	//} else {
+	//	if resp.Body != nil {
+	//		fmt.Println(*resp.Body)
+	//	} else {
+	//		fmt.Println(resp.Body)
+	//	}
+	//}
 }
 
 func CreateDailyTaskMessage[T Assignable](tasks []T, member *Member) string {

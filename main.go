@@ -1,10 +1,15 @@
 package main
 
 import (
+	"fmt"
+	"household-planner/pkg/backend"
 	"household-planner/pkg/planner"
 )
 
 func main() {
+	fmt.Println("[INFO] Starting Household Planner...")
+	go backend.StartServer()
+
 	config := planner.LoadConfig()
 	myHousehold := planner.NewHousehold(config)
 
