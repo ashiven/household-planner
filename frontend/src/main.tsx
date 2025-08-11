@@ -2,9 +2,11 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import "@fontsource/inter";
-
 import { routeTree } from "./routeTree.gen";
+import { CssVarsProvider } from "@mui/joy/styles";
+
 const router = createRouter({ routeTree });
+
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
@@ -16,7 +18,13 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <CssVarsProvider
+        defaultMode="dark"
+        modeStorageKey="joy-mode-scheme-dark"
+        disableNestedContext
+      >
+        <RouterProvider router={router} />
+      </CssVarsProvider>
     </StrictMode>,
   );
 }
