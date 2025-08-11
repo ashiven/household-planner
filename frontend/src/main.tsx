@@ -4,6 +4,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import "@fontsource/inter";
 import { routeTree } from "./routeTree.gen";
 import { CssVarsProvider } from "@mui/joy/styles";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createRouter({ routeTree });
 
@@ -18,9 +19,11 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <CssVarsProvider defaultMode="dark">
-        <RouterProvider router={router} />
-      </CssVarsProvider>
+      <QueryClientProvider client={new QueryClient()}>
+        <CssVarsProvider defaultMode="dark">
+          <RouterProvider router={router} />
+        </CssVarsProvider>
+      </QueryClientProvider>
     </StrictMode>,
   );
 }
