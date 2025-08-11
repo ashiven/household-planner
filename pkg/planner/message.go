@@ -1,6 +1,7 @@
 package planner
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -8,8 +9,6 @@ import (
 	"github.com/twilio/twilio-go"
 	api "github.com/twilio/twilio-go/rest/api/v2010"
 )
-
-var SENDER = getEnvVar("WHATSAPP_SENDER")
 
 func getEnvVar(key string) string {
 	err := godotenv.Load(".env")
@@ -30,24 +29,56 @@ func InitializeTwilioClient() *twilio.RestClient {
 	return client
 }
 
-func SendMessage(client *twilio.RestClient, message string, receiver string) {
-	params := &api.CreateMessageParams{}
-	params.SetFrom("whatsapp:" + SENDER)
-	params.SetTo("whatsapp:" + receiver)
-	params.SetBody(message)
+func taskNameOrNone(tasks []Assignable, index int) string {
+	if index < len(tasks) {
+		return tasks[index].GetName()
+	}
+	return "_"
+}
 
-	// TODO: uncomment after debugging
-	//resp, err := client.Api.CreateMessage(params)
-	//if err != nil {
-	//	fmt.Println(err.Error())
-	//	os.Exit(1)
-	//} else {
-	//	if resp.Body != nil {
-	//		fmt.Println(*resp.Body)
-	//	} else {
-	//		fmt.Println(resp.Body)
-	//	}
-	//}
+func SendMessage(client *twilio.RestClient, receiver *Member, tasks []Assignable, debug bool) {
+	templateSid := getEnvVar("TEMPLATE_SID")
+	sender := getEnvVar("WHATSAPP_SENDER")
+	serviceSid := getEnvVar("SERVICE_SID")
+
+	ContentVariables, err := json.Marshal(map[string]any{
+		"1": receiver.Name,
+		"2": "heutigen",
+		"3": taskNameOrNone(tasks, 0),
+		"4": taskNameOrNone(tasks, 1),
+		"5": taskNameOrNone(tasks, 2),
+	})
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	if debug {
+		fmt.Println("[DEBUG] Template SID:", templateSid)
+		fmt.Println("[DEBUG] Service SID:", serviceSid)
+		fmt.Println("[DEBUG] Sender:", sender)
+		fmt.Println("[DEBUG] Receiver:", receiver.Name, "(", receiver.Phonenumber, ")")
+		fmt.Println("[DEBUG] Sending message with the following content variables:")
+		fmt.Println(string(ContentVariables))
+		return
+	}
+
+	params := &api.CreateMessageParams{}
+	params.SetContentSid(templateSid)
+	params.SetTo("whatsapp:" + receiver.Phonenumber)
+	params.SetFrom("whatsapp:" + sender)
+	params.SetContentVariables(string(ContentVariables))
+	params.SetMessagingServiceSid(serviceSid)
+
+	resp, err := client.Api.CreateMessage(params)
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		if resp.Body != nil {
+			fmt.Println(*resp.Body)
+		} else {
+			fmt.Println(resp.Body)
+		}
+	}
 }
 
 func CreateDailyTaskMessage[T Assignable](tasks []T, member *Member) string {

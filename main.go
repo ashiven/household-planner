@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"household-planner/pkg/backend"
 	"household-planner/pkg/planner"
+	"os"
 )
 
 func main() {
+	debug := len(os.Args) > 1 && os.Args[1] == "-d"
+
 	fmt.Println("[INFO] Starting Household Planner...")
 
 	config := planner.LoadConfig()
@@ -31,8 +34,7 @@ func main() {
 		client := planner.InitializeTwilioClient()
 		for _, member := range myHousehold.Members {
 			assignedTasks := myHousehold.GetAssignedTasks(member)
-			dailyTaskMessage := planner.CreateDailyTaskMessage(assignedTasks, member)
-			planner.SendMessage(client, dailyTaskMessage, member.Phonenumber)
+			planner.SendMessage(client, member, assignedTasks, debug)
 		}
 
 		planner.WaitUntilNoon()
