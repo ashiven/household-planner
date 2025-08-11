@@ -7,6 +7,8 @@ import (
 	"math/rand"
 )
 
+var dayOfTheMonth = 1
+
 func (household *Household) AssignDailyTasks() {
 	rand.Shuffle(len(household.DailyTasks), func(i, j int) {
 		household.DailyTasks[i], household.DailyTasks[j] = household.DailyTasks[j], household.DailyTasks[i]
@@ -53,15 +55,16 @@ func (household *Household) AssignMonthlyTasks(member *Member) {
 		randomMember = household.Members[rand.Intn(len(household.Members))]
 	}
 
-	if household.dayOfTheMonth%household.taskIntervalMonth == 0 {
+	taskIntervalMonth := 30 / len(household.MonthlyTasks)
+	if dayOfTheMonth%taskIntervalMonth == 0 {
 		task := household.remainingMonthlyTasks[0]
 		task.SetAssignee(randomMember)
 		household.remainingMonthlyTasks = household.remainingMonthlyTasks[1:]
 	}
 
-	household.dayOfTheMonth++
-	if household.dayOfTheMonth > 30 {
-		household.dayOfTheMonth = 1
+	dayOfTheMonth++
+	if dayOfTheMonth > 30 {
+		dayOfTheMonth = 1
 	}
 }
 

@@ -8,8 +8,6 @@ type Household struct {
 	MonthlyTasks          []*MonthlyTask
 	remainingWeeklyTasks  []*WeeklyTask
 	remainingMonthlyTasks []*MonthlyTask
-	dayOfTheMonth         int
-	taskIntervalMonth     int
 }
 
 func NewHousehold(config *Config) *Household {
@@ -21,8 +19,6 @@ func NewHousehold(config *Config) *Household {
 		config.MonthlyTasks,
 		[]*WeeklyTask{},
 		[]*MonthlyTask{},
-		1,
-		30 / len(config.MonthlyTasks),
 	}
 }
 
