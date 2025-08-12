@@ -11,16 +11,18 @@ import { useQuery } from "@tanstack/react-query";
 import MemberTable from "../components/memberTable";
 import TaskTable from "../components/taskTable";
 
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
 async function fetchData() {
   let memberData, dailyData, weeklyData, monthlyData;
-  const memberRes = await fetch("/members");
-  const dailyRes = await fetch("/tasks/daily");
-  const weeklyRes = await fetch("/tasks/weekly");
-  const monthlyRes = await fetch("/tasks/monthly");
+  const memberRes = await fetch(`${API_BASE}/members`);
+  const dailyRes = await fetch(`${API_BASE}/tasks/daily`);
+  const weeklyRes = await fetch(`${API_BASE}/tasks/weekly`);
+  const monthlyRes = await fetch(`${API_BASE}/tasks/monthly`);
 
   try {
     memberData = await memberRes.json();

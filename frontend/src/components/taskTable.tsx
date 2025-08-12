@@ -8,6 +8,8 @@ import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Input from "@mui/joy/Input";
 
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 interface Member {
   Name: string;
   Phonenumber: string;
@@ -50,7 +52,7 @@ export default function TaskTable({
       return;
     }
 
-    const response = await fetch("/auth", {
+    const response = await fetch(`${API_BASE}/auth`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password }),
@@ -95,7 +97,7 @@ export default function TaskTable({
   const saveChanges = async () => {
     try {
       console.log("Saving changes to tasks:", JSON.stringify(tableData));
-      const response = await fetch(`/tasks/${id}`, {
+      const response = await fetch(`${API_BASE}/tasks/${id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tableData),

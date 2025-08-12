@@ -8,6 +8,8 @@ import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Input from "@mui/joy/Input";
 
+const API_BASE = import.meta.env.VITE_API_BASE || "";
+
 interface Member {
   Name: string;
   Phonenumber: string;
@@ -40,7 +42,7 @@ export default function MembersTable({ members }: { members: Member[] }) {
       return;
     }
 
-    const response = await fetch("/auth", {
+    const response = await fetch(`${API_BASE}/auth`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password }),
@@ -86,7 +88,7 @@ export default function MembersTable({ members }: { members: Member[] }) {
 
   const saveChanges = async () => {
     try {
-      const response = await fetch("/members", {
+      const response = await fetch(`${API_BASE}/members`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tableData),
