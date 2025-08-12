@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import MemberTable from "../components/memberTable";
 import TaskTable from "../components/taskTable";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "";
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:8080";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -46,6 +46,11 @@ async function fetchData() {
 }
 
 function Index() {
+  const [membersExpanded, setMembersExpanded] = React.useState(true);
+  const [dailyExpanded, setDailyExpanded] = React.useState(true);
+  const [weeklyExpanded, setWeeklyExpanded] = React.useState(true);
+  const [monthlyExpanded, setMonthlyExpanded] = React.useState(true);
+
   const { isLoading, isError, data, error } = useQuery({
     queryKey: ["index"],
     queryFn: fetchData,
@@ -63,11 +68,6 @@ function Index() {
   if (isError) {
     return <span>Error loading data: {error.message}</span>;
   }
-
-  const [membersExpanded, setMembersExpanded] = React.useState(true);
-  const [dailyExpanded, setDailyExpanded] = React.useState(true);
-  const [weeklyExpanded, setWeeklyExpanded] = React.useState(true);
-  const [monthlyExpanded, setMonthlyExpanded] = React.useState(true);
 
   return (
     <Sheet variant="soft" color="neutral" sx={{ p: 4, minHeight: "100vh" }}>

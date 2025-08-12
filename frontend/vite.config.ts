@@ -9,10 +9,11 @@ export default defineConfig({
     react(),
   ],
   server: {
-    proxy: {
-      "/members": "http://localhost:8080",
-      "/tasks": "http://localhost:8080",
-      "/auth": "http://localhost:8080",
+    port: 80,
+    host: true,
+    watch: {
+      usePolling: true,
     },
   },
+  base: "/",
 });
