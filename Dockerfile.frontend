@@ -3,9 +3,9 @@ WORKDIR /app
 
 ARG VITE_API_BASE
 
-COPY frontend/package*.json ./
+COPY package*.json ./
 RUN npm install
-COPY frontend/ .
+COPY . .
 
 ENV VITE_API_BASE=$VITE_API_BASE
 RUN npm run build

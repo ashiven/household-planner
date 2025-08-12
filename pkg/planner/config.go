@@ -6,7 +6,7 @@ import (
 	"github.com/bigkevmcd/go-configparser"
 )
 
-const configPath = "config.ini.local"
+const configPath = "config.ini"
 
 type Config struct {
 	Filename     string
