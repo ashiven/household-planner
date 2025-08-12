@@ -1,2 +1,5 @@
 # household-planner
+
 Receive reminders of the household tasks in your responsibility
+
+Note: If you want to host this application, replace localhost with your server's IP address in the `docker-compose.yml` file.
