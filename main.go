@@ -34,7 +34,7 @@ func main() {
 		client := planner.InitializeTwilioClient()
 		for _, member := range myHousehold.Members {
 			assignedTasks := myHousehold.GetAssignedTasks(member)
-			planner.SendMessage(client, member, assignedTasks, debug)
+			planner.SendMessageSms(client, member, assignedTasks, debug)
 		}
 
 		planner.WaitUntilNoon()

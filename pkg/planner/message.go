@@ -36,7 +36,7 @@ func taskNameOrNone(tasks []Assignable, index int) string {
 	return "_"
 }
 
-func SendMessage(client *twilio.RestClient, receiver *Member, tasks []Assignable, debug bool) {
+func SendMessageWhatsapp(client *twilio.RestClient, receiver *Member, tasks []Assignable, debug bool) {
 	templateSid := getEnvVar("TEMPLATE_SID")
 	sender := getEnvVar("WHATSAPP_SENDER")
 	serviceSid := getEnvVar("SERVICE_SID")
@@ -81,7 +81,7 @@ func SendMessage(client *twilio.RestClient, receiver *Member, tasks []Assignable
 	}
 }
 
-func CreateDailyTaskMessage[T Assignable](tasks []T, member *Member) string {
+func createDailyTaskMessage(tasks []Assignable, member *Member) string {
 	message := fmt.Sprintf("%s! Deine heutigen Aufgaben sind:\n", member.Name)
 
 	dailyTasks := "\n"
@@ -90,4 +90,33 @@ func CreateDailyTaskMessage[T Assignable](tasks []T, member *Member) string {
 	}
 
 	return message + dailyTasks
+}
+
+func SendMessageSms(client *twilio.RestClient, receiver *Member, tasks []Assignable, debug bool) {
+	sender := getEnvVar("SMS_SENDER")
+
+	message := createDailyTaskMessage(tasks, receiver)
+
+	if debug {
+		fmt.Println("[DEBUG] Sender:", sender)
+		fmt.Println("[DEBUG] Receiver:", receiver.Name, "(", receiver.Phonenumber, ")")
+		fmt.Println("[DEBUG] Sending message:", message)
+		return
+	}
+
+	params := &api.CreateMessageParams{}
+	params.SetTo(receiver.Phonenumber)
+	params.SetFrom(sender)
+	params.SetBody(message)
+
+	resp, err := client.Api.CreateMessage(params)
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		if resp.Body != nil {
+			fmt.Println(*resp.Body)
+		} else {
+			fmt.Println(resp.Body)
+		}
+	}
 }
