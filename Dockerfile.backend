@@ -9,5 +9,8 @@ RUN CGO_ENABLED=0 go build -o backend main.go
 FROM gcr.io/distroless/static-debian12
 WORKDIR /app
 COPY --from=builder /app/backend .
+COPY .env .
+COPY config.ini .
+
 EXPOSE 8080
-CMD ["./backend"]
+CMD ["./backend", "-d"]
