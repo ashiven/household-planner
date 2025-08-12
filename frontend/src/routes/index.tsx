@@ -8,7 +8,8 @@ import AccordionGroup from "@mui/joy/AccordionGroup";
 import AccordionSummary from "@mui/joy/AccordionSummary";
 import { useQuery } from "@tanstack/react-query";
 
-import { MembersTable, TaskTable } from "../../components/table";
+import MemberTable from "../components/memberTable";
+import TaskTable from "../components/taskTable";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -75,7 +76,7 @@ function Index() {
         >
           <AccordionSummary>Mitglieder</AccordionSummary>
           <AccordionDetails>
-            <MembersTable members={data.members} />
+            <MemberTable members={data.members} />
           </AccordionDetails>
         </Accordion>
         <Accordion
@@ -84,7 +85,7 @@ function Index() {
         >
           <AccordionSummary>Tägliche Aufgaben</AccordionSummary>
           <AccordionDetails>
-            <TaskTable tasks={data.daily} />
+            <TaskTable id="daily" tasks={data.daily} />
           </AccordionDetails>
         </Accordion>
         <Accordion
@@ -93,7 +94,7 @@ function Index() {
         >
           <AccordionSummary>Wöchentliche Aufgaben</AccordionSummary>
           <AccordionDetails>
-            <TaskTable tasks={data.weekly} />
+            <TaskTable id="weekly" tasks={data.weekly} />
           </AccordionDetails>
         </Accordion>
         <Accordion
@@ -102,7 +103,7 @@ function Index() {
         >
           <AccordionSummary>Monatliche Aufgaben</AccordionSummary>
           <AccordionDetails>
-            <TaskTable tasks={data.monthly} />
+            <TaskTable id="monthly" tasks={data.monthly} />
           </AccordionDetails>
         </Accordion>
       </AccordionGroup>
