@@ -33,6 +33,26 @@ export default function MembersTable({ members }: { members: Member[] }) {
     }
   }, [tableData]);
 
+  const authorize = async (action: Function) => {
+    const password = prompt("Bitte Passwort eingeben:");
+
+    if (!password) {
+      return;
+    }
+
+    const response = await fetch("/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+
+    if (response.ok) {
+      action();
+    } else {
+      alert("Falsches Passwort.");
+    }
+  };
+
   const startEdit = (index: number) => {
     setEditIndex(index);
     setFormData(tableData[index]);
@@ -97,13 +117,16 @@ export default function MembersTable({ members }: { members: Member[] }) {
               <td>{member.Phonenumber}</td>
               <td>
                 <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-                  <Button color="neutral" onClick={() => startEdit(index)}>
+                  <Button
+                    color="neutral"
+                    onClick={() => authorize(() => startEdit(index))}
+                  >
                     Bearbeiten
                   </Button>
                   <Button
                     variant="soft"
                     color="danger"
-                    onClick={() => deleteMember(index)}
+                    onClick={() => authorize(() => deleteMember(index))}
                   >
                     Löschen
                   </Button>
@@ -115,7 +138,7 @@ export default function MembersTable({ members }: { members: Member[] }) {
       </Table>
 
       <Box sx={{ marginTop: 2, display: "flex", gap: 2, flexWrap: "wrap" }}>
-        <Button color="primary" onClick={startAdd}>
+        <Button color="primary" onClick={() => authorize(startAdd)}>
           Hinzufügen
         </Button>
       </Box>

@@ -10,7 +10,7 @@ import (
 	api "github.com/twilio/twilio-go/rest/api/v2010"
 )
 
-func getEnvVar(key string) string {
+func GetEnvVar(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
 		fmt.Println("Error loading .env file")
@@ -20,8 +20,8 @@ func getEnvVar(key string) string {
 }
 
 func InitializeTwilioClient() *twilio.RestClient {
-	twilioAccountSid := getEnvVar("TWILIO_ACCOUNT_SID")
-	twilioAuthToken := getEnvVar("TWILIO_AUTH_TOKEN")
+	twilioAccountSid := GetEnvVar("TWILIO_ACCOUNT_SID")
+	twilioAuthToken := GetEnvVar("TWILIO_AUTH_TOKEN")
 	_ = twilioAccountSid
 	_ = twilioAuthToken
 
@@ -37,9 +37,9 @@ func taskNameOrNone(tasks []Assignable, index int) string {
 }
 
 func SendMessageWhatsapp(client *twilio.RestClient, receiver *Member, tasks []Assignable, debug bool) {
-	templateSid := getEnvVar("TEMPLATE_SID")
-	sender := getEnvVar("WHATSAPP_SENDER")
-	serviceSid := getEnvVar("SERVICE_SID")
+	templateSid := GetEnvVar("TEMPLATE_SID")
+	sender := GetEnvVar("WHATSAPP_SENDER")
+	serviceSid := GetEnvVar("SERVICE_SID")
 
 	ContentVariables, err := json.Marshal(map[string]any{
 		"1": receiver.Name,
@@ -93,7 +93,7 @@ func createDailyTaskMessage(tasks []Assignable, member *Member) string {
 }
 
 func SendMessageSms(client *twilio.RestClient, receiver *Member, tasks []Assignable, debug bool) {
-	sender := getEnvVar("SMS_SENDER")
+	sender := GetEnvVar("SMS_SENDER")
 
 	message := createDailyTaskMessage(tasks, receiver)
 

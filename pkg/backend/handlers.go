@@ -8,17 +8,37 @@ import (
 )
 
 var (
-	Config   *planner.Config
-	FileLock sync.Mutex
+	Config        *planner.Config
+	fileLock      sync.Mutex
+	adminPassword = planner.GetEnvVar("ADMIN_PASSWORD")
 )
 
 func SetConfig(config *planner.Config) {
 	Config = config
 }
 
+func checkAdminPassword(w http.ResponseWriter, r *http.Request) {
+	type PasswordRequest struct {
+		Password string `json:"password"`
+	}
+	var passwordRequest PasswordRequest
+
+	if err := json.NewDecoder(r.Body).Decode(&passwordRequest); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	if passwordRequest.Password == adminPassword {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	http.Error(w, "Password is incorrect", http.StatusUnauthorized)
+}
+
 func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string, setConfigOption func(option T), setOptionsMemory func(updated []*T)) {
-	FileLock.Lock()
-	defer FileLock.Unlock()
+	fileLock.Lock()
+	defer fileLock.Unlock()
 
 	var updatedOptions []T
 	if err := json.NewDecoder(r.Body).Decode(&updatedOptions); err != nil {

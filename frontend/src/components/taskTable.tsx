@@ -43,6 +43,26 @@ export default function TaskTable({
     }
   }, [tableData]);
 
+  const authorize = async (action: Function) => {
+    const password = prompt("Bitte Passwort eingeben:");
+
+    if (!password) {
+      return;
+    }
+
+    const response = await fetch("/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+
+    if (response.ok) {
+      action();
+    } else {
+      alert("Falsches Passwort.");
+    }
+  };
+
   const startEdit = (index: number) => {
     setEditIndex(index);
     setFormData(tableData[index]);
@@ -106,13 +126,16 @@ export default function TaskTable({
               <td>{task.Assignee?.Name ?? ""}</td>
               <td>
                 <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-                  <Button color="neutral" onClick={() => startEdit(index)}>
+                  <Button
+                    color="neutral"
+                    onClick={() => authorize(() => startEdit(index))}
+                  >
                     Bearbeiten
                   </Button>
                   <Button
                     variant="soft"
                     color="danger"
-                    onClick={() => deleteTask(index)}
+                    onClick={() => authorize(() => deleteTask(index))}
                   >
                     Löschen
                   </Button>
@@ -124,7 +147,7 @@ export default function TaskTable({
       </Table>
 
       <Box sx={{ marginTop: 2 }}>
-        <Button color="primary" onClick={startAdd}>
+        <Button color="primary" onClick={() => authorize(startAdd)}>
           Hinzufügen
         </Button>
       </Box>

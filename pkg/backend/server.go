@@ -24,5 +24,7 @@ func StartServer() {
 	router.HandleFunc("/tasks/monthly", getMonthlyTasks).Methods("GET")
 	router.HandleFunc("/tasks/monthly", updateMonthlyTasks).Methods("POST")
 
+	router.HandleFunc("/auth", checkAdminPassword).Methods("POST")
+
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

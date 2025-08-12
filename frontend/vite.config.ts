@@ -12,6 +12,7 @@ export default defineConfig({
     proxy: {
       "/members": "http://localhost:8080",
       "/tasks": "http://localhost:8080",
+      "/auth": "http://localhost:8080",
     },
   },
 });

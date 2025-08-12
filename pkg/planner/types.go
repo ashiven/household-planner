@@ -22,14 +22,6 @@ func NewHousehold(config *Config) *Household {
 	}
 }
 
-type HouseholdInterface interface {
-	AssignDailyTasks(household *Household)
-	AssignWeeklyTasks(household *Household)
-	AssignMonthlyTasks(household *Household)
-	GetAssignedTasks(household *Household, member *Member) []Assignable
-	ClearAssignments(household *Household)
-}
-
 type Member struct {
 	Name        string
 	Phonenumber string
