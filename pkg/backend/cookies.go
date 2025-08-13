@@ -18,11 +18,12 @@ var (
 
 func handleSetCookie(w http.ResponseWriter) {
 	cookie := http.Cookie{
-		Name:   cookieName,
-		Value:  cookieValue,
-		Path:   "/",
-		MaxAge: 3600,
-		Secure: true,
+		Name:     cookieName,
+		Value:    cookieValue,
+		Path:     "/",
+		MaxAge:   3600,
+		Secure:   true,
+		HttpOnly: true,
 	}
 
 	err := handleWriteSigned(w, cookie)

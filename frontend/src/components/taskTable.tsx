@@ -54,6 +54,7 @@ export default function TaskTable({
 
     const response = await fetch(`${API_BASE}/auth`, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password }),
     });
@@ -99,6 +100,7 @@ export default function TaskTable({
       console.log("Saving changes to tasks:", JSON.stringify(tableData));
       const response = await fetch(`${API_BASE}/tasks/${id}`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tableData),
       });

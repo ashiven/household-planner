@@ -44,6 +44,7 @@ export default function MembersTable({ members }: { members: Member[] }) {
 
     const response = await fetch(`${API_BASE}/auth`, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password }),
     });
@@ -90,6 +91,7 @@ export default function MembersTable({ members }: { members: Member[] }) {
     try {
       const response = await fetch(`${API_BASE}/members`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tableData),
       });
