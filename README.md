@@ -16,3 +16,9 @@ certbot certonly --standalone -d domain-name
 ```
 
 Furthermore, replace `var allowedOrigin = "http://localhost"` in `pkg/backend/server.go` with `var allowedOrigin = "https://<domain-name>"`.
+
+If you want the backend to run in production mode (messages are sent out to household members), replace the command in the `Dockerfile.backend` with:
+
+```bash
+CMD ["./backend"]
+```
