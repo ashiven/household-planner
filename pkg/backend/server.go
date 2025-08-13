@@ -11,7 +11,9 @@ import (
 
 func StartServer() {
 	fmt.Println("[INFO] Starting Household Planner API server...")
+
 	router := mux.NewRouter()
+
 	router.Use(mux.CORSMethodMiddleware(router))
 	router.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

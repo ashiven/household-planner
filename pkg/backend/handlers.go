@@ -2,6 +2,7 @@ package backend
 
 import (
 	"encoding/json"
+	"fmt"
 	"household-planner/pkg/planner"
 	"net/http"
 	"sync"
@@ -28,15 +29,27 @@ func checkAdminPassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if passwordRequest.Password == adminPassword {
-		w.WriteHeader(http.StatusOK)
+	if passwordRequest.Password != adminPassword {
+		http.Error(w, "Password is incorrect", http.StatusUnauthorized)
 		return
 	}
 
-	http.Error(w, "Password is incorrect", http.StatusUnauthorized)
+	fmt.Println("[INFO] Admin password is correct, setting cookie")
+	handleSetCookie(w)
+	fmt.Println("[INFO] Cookie set successfully")
+	w.WriteHeader(http.StatusOK)
 }
 
 func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string, setConfigOption func(option T), setOptionsMemory func(updated []*T)) {
+	fmt.Println("[INFO] Getting cookie for update operation")
+	err := handleGetCookie(r)
+	if err != nil {
+		fmt.Println("[ERROR] Failed to read cookie:", err)
+		http.Error(w, fmt.Sprintf("Failed to read cookie: %v", err), http.StatusInternalServerError)
+		return
+	}
+	fmt.Println("[INFO] Cookie retrieved successfully")
+
 	fileLock.Lock()
 	defer fileLock.Unlock()
 
