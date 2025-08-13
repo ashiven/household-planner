@@ -3,8 +3,12 @@ package planner
 import "time"
 
 func WaitUntilNoon() {
-	currentTime := time.Now()
-	for currentTime.Hour() < 12 || currentTime.Hour() > 12 {
-		time.Sleep(1 * time.Minute)
+	now := time.Now()
+	noon := time.Date(now.Year(), now.Month(), now.Day(), 12, 0, 0, 0, now.Location())
+
+	if now.After(noon) {
+		noon = noon.Add(24 * time.Hour)
 	}
+
+	time.Sleep(time.Until(noon))
 }
