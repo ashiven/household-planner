@@ -14,3 +14,5 @@ apt install -y certbot python3-certbot-nginx
 ```bash
 certbot certonly --standalone -d domain-name
 ```
+
+Furthermore, replace `var allowedOrigin = "http://localhost"` in `pkg/backend/server.go` with `var allowedOrigin = "https://<domain-name>"`.
