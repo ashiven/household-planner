@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  Never forget about your household responsibilites again
+  Never forget about your household responsibilities again
 </p>
 
 <div align="center">
@@ -29,7 +29,7 @@
 ## Features
 
 - :clipboard: Automatic household task assignments
-- :alarm_clock: Daily reminders via SMS or Whatsapp
+- :alarm_clock: Daily reminders via SMS or WhatsApp
 - :wrench: Browser interface for configuration
 
 ## Getting Started
@@ -42,13 +42,13 @@
 
 ### Setup
 
-1. Clone the repository to your machine
+1. Clone the repository to your machine.
 
 ```bash
 git clone https://github.com/ashiven/household-planner.git
 ```
 
-2. Fill out the `.env` file with the required variables
+2. Fill out the `.env` file with the required variables.
 
 ```bash
 TWILIO_ACCOUNT_SID=AC55...
@@ -61,7 +61,7 @@ ADMIN_PASSWORD=myAdminPassword
 DOMAIN_NAME=myDomainName.com
 ```
 
-3. Create an SSL certificate
+3. Create an SSL certificate.
 
 ```bash
 apt install -y certbot python3-certbot-nginx
@@ -71,7 +71,7 @@ apt install -y certbot python3-certbot-nginx
 certbot certonly --standalone -d <domain-name>
 ```
 
-4. Start the services
+4. Start the services.
 
 ```bash
 docker compose up --detach --build
@@ -79,10 +79,10 @@ docker compose up --detach --build
 
 ## Configuration
 
-- Navigate to your domain name in the browser to open up the configuration interface
-- Add members that should be notified about household tasks with phone numbers in the [E.164](https://en.wikipedia.org/wiki/E.164) format
-- Add household tasks that need to be completed every day/week/month
-- Once a day at 12:00 PM, every member will be reminded of their tasks via SMS or Whatsapp
+- Navigate to your domain name in the browser to open up the configuration interface.
+- Add members that should be notified about household tasks with phone numbers in the [E.164](https://en.wikipedia.org/wiki/E.164) format.
+- Add household tasks that need to be completed every day/week/month.
+- Once a day at 12:00 PM, every member will be reminded of their tasks via SMS or WhatsApp.
 
 ## Contributing
 
