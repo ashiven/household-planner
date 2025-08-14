@@ -15,7 +15,6 @@
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/ashiven/housekeepy)](https://github.com/ashiven/housekeepy/issues)
 [![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/ashiven/housekeepy)](https://github.com/ashiven/housekeepy/pulls)
 
-<img src="./assets/demo.gif"/>
 </div>
 
 **Housekeepy** is a simple application that organizes your household and prevents fights about who should do what and when and how often. 
