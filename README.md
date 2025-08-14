@@ -74,15 +74,15 @@ Thomas : +4924352425243
 Peter : +4923452354235
 
 [Daily Tasks]
-Arbeitsplatte abwischen : 
-Essensreste in Kühlschrank räumen : 
+Throw out the trash : 
+Wipe the floor : 
 
 [Weekly Tasks]
-Flaschenmüll wegbringen : 
+Buy groceries : 
+Clean the living room :
 
 [Monthly Tasks]
-Kalk mit Essig entfernen : 
-Kühlschrank reinigen : 
+Clean the fridge : 
 ```
 
 4. Create an SSL certificate.
