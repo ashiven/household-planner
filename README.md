@@ -50,7 +50,7 @@ git clone https://github.com/ashiven/housekeepy.git
 
 2. Fill out the `.env` file with the required variables.
 
-```bash
+```
 TWILIO_ACCOUNT_SID=AC55...
 TWILIO_AUTH_TOKEN=25fe...
 WHATSAPP_SENDER=+155...
@@ -61,13 +61,32 @@ ADMIN_PASSWORD=myAdminPassword
 DOMAIN_NAME=myDomainName.com
 ```
 
-3. Create an SSL certificate.
+3. Add tasks and household members to `config.ini`.
+
+```
+[Members]
+Thomas : +4924352425243
+Peter : +4923452354235
+
+[Daily Tasks]
+Arbeitsplatte abwischen : 
+Essensreste in Kühlschrank räumen : 
+
+[Monthly Tasks]
+Kalk mit Essig entfernen : 
+Kühlschrank reinigen : 
+
+[Weekly Tasks]
+Flaschenmüll wegbringen : 
+```
+
+4. Create an SSL certificate.
 
 ```bash
 certbot certonly --standalone -d <domain-name>
 ```
 
-4. Start the services.
+5. Start the services.
 
 ```bash
 docker compose up --detach --build
