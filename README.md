@@ -38,7 +38,7 @@
 
 1. Register for an account on [Twilio](https://www.twilio.com/en-us) and create a [Messaging Service](https://console.twilio.com/us1/develop/sms/services).
 2. Have [Docker](https://docs.docker.com/get-started/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed.
-3. If you want to host this service, start up your host machine and prepare your domain name.
+3. If you want to host this service, prepare your domain name and install [Certbot](https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-20-04).
 
 ### Setup
 
@@ -62,10 +62,6 @@ DOMAIN_NAME=myDomainName.com
 ```
 
 3. Create an SSL certificate.
-
-```bash
-apt install -y certbot python3-certbot-nginx
-```
 
 ```bash
 certbot certonly --standalone -d <domain-name>
