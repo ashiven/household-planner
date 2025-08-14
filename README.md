@@ -77,12 +77,12 @@ Peter : +4923452354235
 Arbeitsplatte abwischen : 
 Essensreste in Kühlschrank räumen : 
 
+[Weekly Tasks]
+Flaschenmüll wegbringen : 
+
 [Monthly Tasks]
 Kalk mit Essig entfernen : 
 Kühlschrank reinigen : 
-
-[Weekly Tasks]
-Flaschenmüll wegbringen : 
 ```
 
 4. Create an SSL certificate.
