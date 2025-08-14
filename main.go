@@ -12,7 +12,12 @@ func main() {
 	fmt.Println("[INFO] Starting Household Planner...")
 	debug := len(os.Args) > 1 && os.Args[1] == "-d"
 
-	myHousehold := planner.NewHousehold()
+	myHousehold, err := planner.NewHousehold()
+	if err != nil {
+		fmt.Println("[ERROR] Failed to create household:", err)
+		return
+	}
+
 	backend.SetHousehold(myHousehold)
 	go backend.StartServer()
 

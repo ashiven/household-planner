@@ -1,31 +1,49 @@
+// Package planner provides functionality to manage household members.
+//
+// It includes the ability to create a new household member with a name and phone number.
 package planner
 
 import (
-	"fmt"
-
 	"github.com/bigkevmcd/go-configparser"
 )
 
 const configPath = "config.ini"
 
-type Household struct {
-	Configfile   string
-	Config       *configparser.ConfigParser
-	Members      []*Member
-	DailyTasks   []*DailyTask
-	WeeklyTasks  []*WeeklyTask
-	MonthlyTasks []*MonthlyTask
+type Member struct {
+	Name        string
+	Phonenumber string
 }
 
-func NewHousehold() *Household {
+type Household struct {
+	Configfile            string
+	Config                *configparser.ConfigParser
+	Members               []*Member
+	DailyTasks            []*DailyTask
+	WeeklyTasks           []*WeeklyTask
+	MonthlyTasks          []*MonthlyTask
+	dayOfTheMonth         int
+	currentMemberIndex    int
+	currentMember         *Member
+	remainingWeeklyTasks  []*WeeklyTask
+	remainingMonthlyTasks []*MonthlyTask
+}
+
+func NewMember(name string, phonenumber string) *Member {
+	return &Member{
+		Name:        name,
+		Phonenumber: phonenumber,
+	}
+}
+
+func NewHousehold() (*Household, error) {
 	parser, err := configparser.NewConfigParserFromFile(configPath)
 	if err != nil {
-		fmt.Println(err.Error())
+		return nil, err
 	}
 
 	memberInfo, err := parser.Items("Members")
 	if err != nil {
-		fmt.Println(err.Error())
+		return nil, err
 	}
 	members := []*Member{}
 	for memberName, phoneNumeber := range memberInfo {
@@ -34,7 +52,7 @@ func NewHousehold() *Household {
 
 	dailyTaskInfo, err := parser.Options("Daily Tasks")
 	if err != nil {
-		fmt.Println(err.Error())
+		return nil, err
 	}
 	dailyTasks := []*DailyTask{}
 	for _, dailyTask := range dailyTaskInfo {
@@ -43,7 +61,7 @@ func NewHousehold() *Household {
 
 	weeklyTaskInfo, err := parser.Options("Weekly Tasks")
 	if err != nil {
-		fmt.Println(err.Error())
+		return nil, err
 	}
 	weeklyTasks := []*WeeklyTask{}
 	for _, weeklyTask := range weeklyTaskInfo {
@@ -52,7 +70,7 @@ func NewHousehold() *Household {
 
 	monthlyTaskInfo, err := parser.Options("Monthly Tasks")
 	if err != nil {
-		fmt.Println(err.Error())
+		return nil, err
 	}
 	monthlyTasks := []*MonthlyTask{}
 	for _, monthlyTask := range monthlyTaskInfo {
@@ -66,5 +84,5 @@ func NewHousehold() *Household {
 		DailyTasks:   dailyTasks,
 		WeeklyTasks:  weeklyTasks,
 		MonthlyTasks: monthlyTasks,
-	}
+	}, nil
 }

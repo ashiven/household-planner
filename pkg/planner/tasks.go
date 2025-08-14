@@ -1,122 +1,79 @@
-// Package planner provides functionality to manage household members.
-//
-// It includes the ability to create a new household member with a name and phone number.
 package planner
 
-import (
-	"math/rand"
-)
+type Assignable interface {
+	SetAssignee(member *Member)
+	GetAssignee() *Member
+	GetName() string
+}
 
-var (
-	dayOfTheMonth         = 1
-	currentMemberIndex    = 0
-	currentMember         *Member
-	remainingWeeklyTasks  = []*WeeklyTask{}
-	remainingMonthlyTasks = []*MonthlyTask{}
-)
+type DailyTask struct {
+	Name     string
+	Assignee *Member
+}
 
-func (household *Household) UpdateCurrentMember() {
-	currentMember = household.Members[currentMemberIndex]
-	currentMemberIndex++
-	if currentMemberIndex >= len(household.Members) {
-		currentMemberIndex = 0
+func NewDailyTask(name string) *DailyTask {
+	return &DailyTask{
+		Name:     name,
+		Assignee: nil,
 	}
 }
 
-func (household *Household) AssignDailyTasks() {
-	rand.Shuffle(len(household.DailyTasks), func(i, j int) {
-		household.DailyTasks[i], household.DailyTasks[j] = household.DailyTasks[j], household.DailyTasks[i]
-	})
+func (task *DailyTask) SetAssignee(member *Member) {
+	task.Assignee = member
+}
 
-	shuffledMembers := make([]*Member, len(household.Members))
-	copy(shuffledMembers, (household.Members))
-	rand.Shuffle(len(shuffledMembers), func(i, j int) {
-		shuffledMembers[i], shuffledMembers[j] = shuffledMembers[j], shuffledMembers[i]
-	})
+func (task *DailyTask) GetAssignee() *Member {
+	return task.Assignee
+}
 
-	assigneeIndex := 0
-	for _, task := range household.DailyTasks {
-		task.SetAssignee(shuffledMembers[assigneeIndex])
-		assigneeIndex++
-		if assigneeIndex >= len(shuffledMembers) {
-			assigneeIndex = 0
-		}
+func (task *DailyTask) GetName() string {
+	return task.Name
+}
+
+type WeeklyTask struct {
+	Name     string
+	Assignee *Member
+}
+
+func NewWeeklyTask(name string) *WeeklyTask {
+	return &WeeklyTask{
+		Name:     name,
+		Assignee: nil,
 	}
 }
 
-func (household *Household) AssignWeeklyTasks() {
-	if len(remainingWeeklyTasks) == 0 {
-		remainingWeeklyTasks = append(remainingWeeklyTasks, (household.WeeklyTasks)...)
-	}
+func (task *WeeklyTask) SetAssignee(member *Member) {
+	task.Assignee = member
+}
 
-	amountAdded := 0
-	weeklyTasksPerDay := min(len(household.WeeklyTasks)/len(household.Members), 1)
-	for amountAdded < weeklyTasksPerDay && len(remainingWeeklyTasks) > 0 {
-		task := remainingWeeklyTasks[0]
-		task.SetAssignee(currentMember)
-		remainingWeeklyTasks = remainingWeeklyTasks[1:]
-		amountAdded++
+func (task *WeeklyTask) GetAssignee() *Member {
+	return task.Assignee
+}
+
+func (task *WeeklyTask) GetName() string {
+	return task.Name
+}
+
+type MonthlyTask struct {
+	Name     string
+	Assignee *Member
+}
+
+func NewMonthlyTask(name string) *MonthlyTask {
+	return &MonthlyTask{
+		Name:     name,
+		Assignee: nil,
 	}
 }
 
-func (household *Household) AssignMonthlyTasks() {
-	if len(remainingMonthlyTasks) == 0 {
-		remainingMonthlyTasks = append(remainingMonthlyTasks, household.MonthlyTasks...)
-	}
-
-	randomMember := household.Members[rand.Intn(len(household.Members))]
-	for randomMember.Name == currentMember.Name {
-		randomMember = household.Members[rand.Intn(len(household.Members))]
-	}
-
-	taskIntervalMonth := 30 / len(household.MonthlyTasks)
-	if dayOfTheMonth%taskIntervalMonth == 0 {
-		task := remainingMonthlyTasks[0]
-		task.SetAssignee(randomMember)
-		remainingMonthlyTasks = remainingMonthlyTasks[1:]
-	}
-
-	dayOfTheMonth++
-	if dayOfTheMonth > 30 {
-		dayOfTheMonth = 1
-	}
+func (task *MonthlyTask) SetAssignee(member *Member) {
+	task.Assignee = member
 }
 
-func (household *Household) ClearAssignments() {
-	for _, task := range household.DailyTasks {
-		task.SetAssignee(nil)
-	}
-	for _, task := range household.WeeklyTasks {
-		task.SetAssignee(nil)
-	}
-	for _, task := range household.MonthlyTasks {
-		task.SetAssignee(nil)
-	}
+func (task *MonthlyTask) GetAssignee() *Member {
+	return task.Assignee
 }
 
-func (household *Household) GetAssignedTasks(member *Member) []Assignable {
-	assignedTasks := []Assignable{}
-
-	for _, task := range household.DailyTasks {
-		assignee := task.GetAssignee()
-		if assignee != nil && assignee.Name == member.Name {
-			assignedTasks = append(assignedTasks, task)
-		}
-	}
-
-	for _, task := range household.WeeklyTasks {
-		assignee := task.GetAssignee()
-		if assignee != nil && assignee.Name == member.Name {
-			assignedTasks = append(assignedTasks, task)
-		}
-	}
-
-	for _, task := range household.MonthlyTasks {
-		assignee := task.GetAssignee()
-		if assignee != nil && assignee.Name == member.Name {
-			assignedTasks = append(assignedTasks, task)
-		}
-	}
-
-	return assignedTasks
+func (task *MonthlyTask) GetName() string {
+	return task.Name
 }
