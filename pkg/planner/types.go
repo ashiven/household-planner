@@ -2,10 +2,10 @@ package planner
 
 type Household struct {
 	config                *Config
-	Members               []*Member
-	DailyTasks            []*DailyTask
-	WeeklyTasks           []*WeeklyTask
-	MonthlyTasks          []*MonthlyTask
+	Members               *[]*Member
+	DailyTasks            *[]*DailyTask
+	WeeklyTasks           *[]*WeeklyTask
+	MonthlyTasks          *[]*MonthlyTask
 	remainingWeeklyTasks  []*WeeklyTask
 	remainingMonthlyTasks []*MonthlyTask
 }
@@ -13,10 +13,10 @@ type Household struct {
 func NewHousehold(config *Config) *Household {
 	return &Household{
 		config,
-		config.Members,
-		config.DailyTasks,
-		config.WeeklyTasks,
-		config.MonthlyTasks,
+		&config.Members,
+		&config.DailyTasks,
+		&config.WeeklyTasks,
+		&config.MonthlyTasks,
 		[]*WeeklyTask{},
 		[]*MonthlyTask{},
 	}

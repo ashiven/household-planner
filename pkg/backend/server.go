@@ -20,6 +20,10 @@ func StartServer() {
 
 	router := mux.NewRouter()
 
+	if domainName == "" {
+		allowedOrigin = "http://localhost"
+	}
+
 	router.Use(mux.CORSMethodMiddleware(router))
 	router.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
