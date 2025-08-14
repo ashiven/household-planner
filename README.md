@@ -9,9 +9,9 @@
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub Release](https://img.shields.io/github/v/release/ashiven/household-planner)](https://github.com/ashiven/household-planner/releases)
-[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/ashiven/household-planner)](https://github.com/ashiven/household-planner/issues)
-[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/ashiven/household-planner)](https://github.com/ashiven/household-planner/pulls)
+[![GitHub Release](https://img.shields.io/github/v/release/ashiven/housekeepy)](https://github.com/ashiven/housekeepy/releases)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/ashiven/housekeepy)](https://github.com/ashiven/housekeepy/issues)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues-pr/ashiven/housekeepy)](https://github.com/ashiven/housekeepy/pulls)
 
 <img src="./assets/demo.gif"/>
 </div>
@@ -86,7 +86,7 @@ docker compose up --detach --build
 
 ## Contributing
 
-Please feel free to submit a [pull request](https://github.com/ashiven/household-planner/pulls) or open an [issue](https://github.com/ashiven/household-planner/issues).
+Please feel free to submit a [pull request](https://github.com/ashiven/housekeepy/pulls) or open an [issue](https://github.com/ashiven/housekeepy/issues).
 
 1. Fork the repository
 2. Create a new branch: `git checkout -b feature-name`.
