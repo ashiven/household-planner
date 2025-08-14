@@ -12,10 +12,8 @@ func main() {
 	fmt.Println("[INFO] Starting Household Planner...")
 	debug := len(os.Args) > 1 && os.Args[1] == "-d"
 
-	config := planner.LoadConfig()
-	myHousehold := planner.NewHousehold(config)
-
-	backend.SetConfig(config)
+	myHousehold := planner.NewHousehold()
+	backend.SetHousehold(myHousehold)
 	go backend.StartServer()
 
 	for {
@@ -28,28 +26,13 @@ func main() {
 		myHousehold.AssignMonthlyTasks()
 
 		client := planner.InitializeTwilioClient()
-		for _, member := range *myHousehold.Members {
+		for _, member := range myHousehold.Members {
 			assignedTasks := myHousehold.GetAssignedTasks(member)
 			planner.SendMessageSms(client, member, assignedTasks, debug)
 		}
 
 		if debug {
-			fmt.Println("[DEBUG] Household members: ")
-			fmt.Println(myHousehold.Members)
-			fmt.Println("[DEBUG] Household Daily tasks: ")
-			fmt.Println(myHousehold.DailyTasks)
-			fmt.Println("[DEBUG] Household Weekly tasks: ")
-			fmt.Println(myHousehold.WeeklyTasks)
-			fmt.Println("[DEBUG] Household Monthly tasks: ")
-			fmt.Println(myHousehold.MonthlyTasks)
-			fmt.Println("[DEBUG] Config members: ")
-			fmt.Println(config.Members)
-			fmt.Println("[DEBUG] Config Daily tasks: ")
-			fmt.Println(config.DailyTasks)
-			fmt.Println("[DEBUG] Config Weekly tasks: ")
-			fmt.Println(config.WeeklyTasks)
-			fmt.Println("[DEBUG] Config Monthly tasks: ")
-			fmt.Println(config.MonthlyTasks)
+			fmt.Println("[DEBUG] Starting next day in two minutes...: ")
 			time.Sleep(2 * time.Minute)
 		} else {
 			planner.WaitUntilNoon()

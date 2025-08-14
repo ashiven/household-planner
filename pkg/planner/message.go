@@ -100,7 +100,8 @@ func SendMessageSms(client *twilio.RestClient, receiver *Member, tasks []Assigna
 	if debug {
 		fmt.Println("[DEBUG] Sender:", sender)
 		fmt.Println("[DEBUG] Receiver:", receiver.Name, "(", receiver.Phonenumber, ")")
-		fmt.Println("[DEBUG] Sending message:", message)
+		fmt.Println("[DEBUG] Sending message:")
+		fmt.Println(message)
 		return
 	}
 

@@ -1,27 +1,5 @@
 package planner
 
-type Household struct {
-	config                *Config
-	Members               *[]*Member
-	DailyTasks            *[]*DailyTask
-	WeeklyTasks           *[]*WeeklyTask
-	MonthlyTasks          *[]*MonthlyTask
-	remainingWeeklyTasks  []*WeeklyTask
-	remainingMonthlyTasks []*MonthlyTask
-}
-
-func NewHousehold(config *Config) *Household {
-	return &Household{
-		config,
-		&config.Members,
-		&config.DailyTasks,
-		&config.WeeklyTasks,
-		&config.MonthlyTasks,
-		[]*WeeklyTask{},
-		[]*MonthlyTask{},
-	}
-}
-
 type Member struct {
 	Name        string
 	Phonenumber string

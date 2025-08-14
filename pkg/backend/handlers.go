@@ -9,13 +9,13 @@ import (
 )
 
 var (
-	config        *planner.Config
+	household     *planner.Household
 	fileLock      sync.Mutex
 	adminPassword = planner.GetEnvVar("ADMIN_PASSWORD")
 )
 
-func SetConfig(configToSet *planner.Config) {
-	config = configToSet
+func SetHousehold(householdToSet *planner.Household) {
+	household = householdToSet
 }
 
 func checkAdminPassword(w http.ResponseWriter, r *http.Request) {
@@ -68,63 +68,63 @@ func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string,
 	}
 	setOptionsMemory(configOptionsMemory)
 
-	config.File.RemoveSection(section)
-	config.File.AddSection(section)
+	household.Config.RemoveSection(section)
+	household.Config.AddSection(section)
 
 	for _, option := range updatedOptions {
 		setConfigOption(option)
 	}
 
-	if err := config.File.SaveWithDelimiter(config.Filename, ":"); err != nil {
+	if err := household.Config.SaveWithDelimiter(household.Configfile, ":"); err != nil {
 		http.Error(w, "Error saving config: %v", http.StatusInternalServerError)
 		return
 	}
 }
 
 func getMembers(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(config.Members)
+	json.NewEncoder(w).Encode(household.Members)
 }
 
 func updateMembers(w http.ResponseWriter, r *http.Request) {
 	handleUpdate(w, r, "Members", func(updatedMember planner.Member) {
-		config.File.Set("Members", updatedMember.Name, updatedMember.Phonenumber)
+		household.Config.Set("Members", updatedMember.Name, updatedMember.Phonenumber)
 	}, func(updatedMembers []*planner.Member) {
-		config.Members = updatedMembers
+		household.Members = updatedMembers
 	})
 }
 
 func getDailyTasks(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(config.DailyTasks)
+	json.NewEncoder(w).Encode(household.DailyTasks)
 }
 
 func updateDailyTasks(w http.ResponseWriter, r *http.Request) {
 	handleUpdate(w, r, "Daily Tasks", func(task planner.DailyTask) {
-		config.File.Set("Daily Tasks", task.Name, "")
+		household.Config.Set("Daily Tasks", task.Name, "")
 	}, func(updatedTasks []*planner.DailyTask) {
-		config.DailyTasks = updatedTasks
+		household.DailyTasks = updatedTasks
 	})
 }
 
 func getWeeklyTasks(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(config.WeeklyTasks)
+	json.NewEncoder(w).Encode(household.WeeklyTasks)
 }
 
 func updateWeeklyTasks(w http.ResponseWriter, r *http.Request) {
 	handleUpdate(w, r, "Weekly Tasks", func(task planner.WeeklyTask) {
-		config.File.Set("Weekly Tasks", task.Name, "")
+		household.Config.Set("Weekly Tasks", task.Name, "")
 	}, func(updatedTasks []*planner.WeeklyTask) {
-		config.WeeklyTasks = updatedTasks
+		household.WeeklyTasks = updatedTasks
 	})
 }
 
 func getMonthlyTasks(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(config.MonthlyTasks)
+	json.NewEncoder(w).Encode(household.MonthlyTasks)
 }
 
 func updateMonthlyTasks(w http.ResponseWriter, r *http.Request) {
 	handleUpdate(w, r, "Monthly Tasks", func(task planner.MonthlyTask) {
-		config.File.Set("Monthly Tasks", task.Name, "")
+		household.Config.Set("Monthly Tasks", task.Name, "")
 	}, func(updatedTasks []*planner.MonthlyTask) {
-		config.MonthlyTasks = updatedTasks
+		household.MonthlyTasks = updatedTasks
 	})
 }

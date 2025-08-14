@@ -8,16 +8,16 @@ import (
 
 const configPath = "config.ini"
 
-type Config struct {
-	Filename     string
-	File         *configparser.ConfigParser
+type Household struct {
+	Configfile   string
+	Config       *configparser.ConfigParser
 	Members      []*Member
 	DailyTasks   []*DailyTask
 	WeeklyTasks  []*WeeklyTask
 	MonthlyTasks []*MonthlyTask
 }
 
-func LoadConfig() *Config {
+func NewHousehold() *Household {
 	parser, err := configparser.NewConfigParserFromFile(configPath)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -59,9 +59,9 @@ func LoadConfig() *Config {
 		monthlyTasks = append(monthlyTasks, NewMonthlyTask(monthlyTask))
 	}
 
-	return &Config{
-		Filename:     configPath,
-		File:         parser,
+	return &Household{
+		Configfile:   configPath,
+		Config:       parser,
 		Members:      members,
 		DailyTasks:   dailyTasks,
 		WeeklyTasks:  weeklyTasks,
