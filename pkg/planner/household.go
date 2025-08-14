@@ -4,6 +4,8 @@
 package planner
 
 import (
+	"errors"
+
 	"github.com/bigkevmcd/go-configparser"
 )
 
@@ -75,6 +77,10 @@ func NewHousehold() (*Household, error) {
 	monthlyTasks := []*MonthlyTask{}
 	for _, monthlyTask := range monthlyTaskInfo {
 		monthlyTasks = append(monthlyTasks, NewMonthlyTask(monthlyTask))
+	}
+
+	if len(members) == 0 || len(dailyTasks) == 0 || len(weeklyTasks) == 0 || len(monthlyTasks) == 0 {
+		return nil, errors.New("household must have at least one member and one task in each category")
 	}
 
 	return &Household{
