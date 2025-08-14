@@ -16,6 +16,9 @@
 <img src="./assets/demo.gif"/>
 </div>
 
+**Housekeepy** is a simple application that can be used to organize your household and avoid any fights about who should do what and when and how often. 
+Given a list of members and tasks that need to be regularly done in your household, it automatically assigns these tasks each day and sends all members a notification on their chosen messaging service.
+
 ## Table of Contents
 
 - [Features](#features)
