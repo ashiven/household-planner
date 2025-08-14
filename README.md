@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Never forget about your household responsibilities again
+  Never forget about your household responsibilities again!
 </p>
 
 <div align="center">
