@@ -1,4 +1,5 @@
 <p align="center">
+  <img src="https://github.com/user-attachments/assets/22f67fd5-96be-48f6-994c-fb112e2a85aa" width="150" height="150">
   <h2 align="center">Housekeepy</h2>
 </p>
 
@@ -17,7 +18,7 @@
 </div>
 
 **Housekeepy** is a simple application that organizes your household and prevents any fights about who should do what and when and how often. 
-Given a list of members and tasks that need to be regularly done in your household, it automatically assigns these tasks each day and sends all members a notification on their chosen messaging service.
+Given a list of members and regular household tasks, it automatically assigns these tasks each day and sends all members a notification on their chosen messaging service.
 
 ## Table of Contents
 
