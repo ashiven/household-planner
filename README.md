@@ -28,7 +28,7 @@
 
 ## Features
 
-- :clipboard: Automatically household task assignments
+- :clipboard: Automatic household task assignments
 - :alarm_clock: Daily reminders via SMS or Whatsapp
 - :wrench: Browser interface for configuration
 
