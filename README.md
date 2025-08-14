@@ -80,6 +80,7 @@ docker compose up --detach --build
 ## Configuration
 
 - Navigate to your domain name in the browser to open up the configuration interface.
+- Any edit has to be confirmed with the `ADMIN_PASSWORD` configured in the `.env` file. 
 - Add members that should be notified about household tasks with phone numbers in the [E.164](https://en.wikipedia.org/wiki/E.164) format.
 - Add household tasks that need to be completed every day/week/month.
 - Once a day at 12:00 PM, every member will be reminded of their tasks via SMS or WhatsApp.
