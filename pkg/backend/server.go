@@ -3,13 +3,17 @@ package backend
 
 import (
 	"fmt"
+	"household-planner/pkg/planner"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
-var allowedOrigin = "http://localhost"
+var (
+	domainName    = planner.GetEnvVar("DOMAIN_NAME")
+	allowedOrigin = fmt.Sprintf("https://%s", domainName)
+)
 
 func StartServer() {
 	fmt.Println("[INFO] Starting Household Planner API server...")

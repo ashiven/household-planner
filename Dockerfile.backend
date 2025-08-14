@@ -13,4 +13,4 @@ COPY .env .
 COPY config.ini .
 
 EXPOSE 8080
-CMD ["./backend", "-d"]
+CMD ["./backend"]
