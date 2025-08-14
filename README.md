@@ -1,9 +1,11 @@
 <p align="center">
+  <img src="https://github.com/user-attachments/assets/fb9a3ed6-8435-4317-b1d0-d67477bbaadb" width="150" height="150" alt="icon">
   <h2 align="center">Housekeepy</h2>
+
 </p>
 
 <p align="center">
-  Never forget about your household responsibilities again
+  Never forget your household responsibilities again!
 </p>
 
 <div align="center">
@@ -16,8 +18,8 @@
 <img src="./assets/demo.gif"/>
 </div>
 
-**Housekeepy** is a simple application that can be used to organize your household and avoid any fights about who should do what and when and how often. 
-Given a list of members and tasks that need to be regularly done in your household, it automatically assigns these tasks each day and sends all members a notification on their chosen messaging service.
+**Housekeepy** is a simple application that organizes your household and prevents fights about who should do what and when and how often. 
+Given a list of members and regular household tasks, it automatically assigns these tasks each day and sends all members a notification on their chosen messaging service.
 
 ## Table of Contents
 
