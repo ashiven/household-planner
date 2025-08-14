@@ -45,7 +45,7 @@
 1. Clone the repository to your machine.
 
 ```bash
-git clone https://github.com/ashiven/household-planner.git
+git clone https://github.com/ashiven/housekeepy.git
 ```
 
 2. Fill out the `.env` file with the required variables.
