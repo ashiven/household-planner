@@ -118,7 +118,7 @@ export default function MembersTable({ members }: { members: Member[] }) {
           {tableData.map((member, index) => (
             <tr key={index}>
               <td>{member.Name}</td>
-              <td>{member.Phonenumber}</td>
+              <td>{member.Phonenumber.slice(0, 9) + "..."}</td>
               <td>
                 <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
                   <Button
