@@ -10,13 +10,15 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: ../Dockerfile.frontend
+      context: .
+      dockerfile: Dockerfile.frontend
       args:
         VITE_API_BASE: https://${DOMAIN_NAME}/api
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
