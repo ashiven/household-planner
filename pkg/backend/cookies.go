@@ -7,11 +7,13 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"household-planner/pkg/planner"
 	"net/http"
 )
 
 var (
-	secretKey, _ = hex.DecodeString("asasdksd349034ldfoiwe234nkj")
+	cookieSecret = planner.GetEnvVar("COOKIE_SECRET")
+	secretKey, _ = hex.DecodeString(cookieSecret)
 	cookieName   = "adminCookie"
 	cookieValue  = "Hello Admin!"
 )

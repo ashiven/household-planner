@@ -17,7 +17,7 @@
 
 </div>
 
-**Housekeepy** is a simple application that organizes your household and prevents fights about who should do what and when and how often. 
+**Housekeepy** is a simple application that organizes your household and prevents fights about who should do what and when and how often.
 Given a list of members and regular household tasks, it automatically assigns these tasks each day and sends all members a notification on their chosen messaging service.
 
 ## Table of Contents
@@ -62,6 +62,7 @@ SMS_SENDER=+174...
 TEMPLATE_SID=HX8b...
 SERVICE_SID=MGf7...
 ADMIN_PASSWORD=myAdminPassword
+COOKIE_SECRET=jhkwe234kjhajhfa234
 DOMAIN_NAME=myDomainName.com
 ```
 
@@ -73,15 +74,15 @@ Thomas : +4924352425243
 Peter : +4923452354235
 
 [Daily Tasks]
-Throw out the trash : 
-Wipe the floor : 
+Throw out the trash :
+Wipe the floor :
 
 [Weekly Tasks]
-Buy groceries : 
+Buy groceries :
 Clean the living room :
 
 [Monthly Tasks]
-Clean the fridge : 
+Clean the fridge :
 ```
 
 4. Create an SSL certificate.
@@ -99,7 +100,7 @@ docker compose up --detach --build
 ## Configuration
 
 - Navigate to your domain name in the browser to open up the configuration interface.
-- Any edit has to be confirmed with the `ADMIN_PASSWORD` configured in the `.env` file. 
+- Any edit has to be confirmed with the `ADMIN_PASSWORD` configured in the `.env` file.
 - Add members that should be notified about household tasks with phone numbers in the [E.164](https://en.wikipedia.org/wiki/E.164) format.
 - Add household tasks that need to be completed every day/week/month.
 - Once a day at 12:00 PM, every member will be reminded of their tasks via SMS or WhatsApp.

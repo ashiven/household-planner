@@ -64,6 +64,10 @@ func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string,
 	// how this should be used to update the in-memory state. (via setOptionsMemory)
 	configOptionsMemory := make([]*T, len(updatedOptions))
 	for optionIndex, option := range updatedOptions {
+		// TODO: maybe we are breaking the in-memory representation here such that assignees can no longer be assigned?
+		// Because the program functions just fine when nothing is being updated from the frontend.
+		// This whole thing only started breaking after I updated one task from the daily task section (deleted Lololol daily task) (which updates everything)
+		// which leads me to think that somehow the in-mem representation of household breaks after an update operation from the frontend
 		configOptionsMemory[optionIndex] = &option
 	}
 	setOptionsMemory(configOptionsMemory)
