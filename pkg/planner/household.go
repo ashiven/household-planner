@@ -84,11 +84,16 @@ func NewHousehold() (*Household, error) {
 	}
 
 	return &Household{
-		Configfile:   configPath,
-		Config:       parser,
-		Members:      members,
-		DailyTasks:   dailyTasks,
-		WeeklyTasks:  weeklyTasks,
-		MonthlyTasks: monthlyTasks,
+		Configfile:            configPath,
+		Config:                parser,
+		Members:               members,
+		DailyTasks:            dailyTasks,
+		WeeklyTasks:           weeklyTasks,
+		MonthlyTasks:          monthlyTasks,
+		dayOfTheMonth:         1,
+		currentMemberIndex:    0,
+		currentMember:         nil,
+		remainingWeeklyTasks:  []*WeeklyTask{},
+		remainingMonthlyTasks: []*MonthlyTask{},
 	}, nil
 }
