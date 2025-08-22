@@ -40,7 +40,7 @@ func checkAdminPassword(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string, setConfigOption func(option T), setOptionsMemory func(updated []*T)) {
+func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string, setConfigFile func(option *T), setConfigMem func(updated []*T)) {
 	fmt.Println("[INFO] Getting cookie for update operation")
 	err := handleGetCookie(r)
 	if err != nil {
@@ -53,30 +53,22 @@ func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string,
 	fileLock.Lock()
 	defer fileLock.Unlock()
 
-	var updatedOptions []T
+	var updatedOptions []*T
 	if err := json.NewDecoder(r.Body).Decode(&updatedOptions); err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
-	// We need to make sure that not only the config file is updated, but also the in-memory representation.
-	// We do this by creating an in-memory representation of the updated options and returning them to the caller who defines
-	// how this should be used to update the in-memory state. (via setOptionsMemory)
-	configOptionsMemory := make([]*T, len(updatedOptions))
-	for optionIndex, option := range updatedOptions {
-		// TODO: maybe we are breaking the in-memory representation here such that assignees can no longer be assigned?
-		// Because the program functions just fine when nothing is being updated from the frontend.
-		// This whole thing only started breaking after I updated one task from the daily task section (deleted Lololol daily task) (which updates everything)
-		// which leads me to think that somehow the in-mem representation of household breaks after an update operation from the frontend
-		configOptionsMemory[optionIndex] = &option
-	}
-	setOptionsMemory(configOptionsMemory)
+	// TODO: maybe we are breaking the in-memory representation here such that assignees can no longer be assigned?
+	// Because the program functions just fine when nothing is being updated from the frontend.
+	// This whole thing only started breaking after I updated one task from the daily task section (deleted Lololol daily task) (which updates everything)
+	// which leads me to think that somehow the in-mem representation of household breaks after an update operation from the frontend
+	setConfigMem(updatedOptions)
 
 	household.Config.RemoveSection(section)
 	household.Config.AddSection(section)
-
 	for _, option := range updatedOptions {
-		setConfigOption(option)
+		setConfigFile(option)
 	}
 
 	if err := household.Config.SaveWithDelimiter(household.Configfile, ":"); err != nil {
@@ -90,8 +82,8 @@ func getMembers(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateMembers(w http.ResponseWriter, r *http.Request) {
-	handleUpdate(w, r, "Members", func(updatedMember planner.Member) {
-		household.Config.Set("Members", updatedMember.Name, updatedMember.Phonenumber)
+	handleUpdate(w, r, "Members", func(member *planner.Member) {
+		household.Config.Set("Members", member.Name, member.Phonenumber)
 	}, func(updatedMembers []*planner.Member) {
 		household.Members = updatedMembers
 	})
@@ -102,7 +94,7 @@ func getDailyTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateDailyTasks(w http.ResponseWriter, r *http.Request) {
-	handleUpdate(w, r, "Daily Tasks", func(task planner.DailyTask) {
+	handleUpdate(w, r, "Daily Tasks", func(task *planner.DailyTask) {
 		household.Config.Set("Daily Tasks", task.Name, "")
 	}, func(updatedTasks []*planner.DailyTask) {
 		household.DailyTasks = updatedTasks
@@ -114,7 +106,7 @@ func getWeeklyTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateWeeklyTasks(w http.ResponseWriter, r *http.Request) {
-	handleUpdate(w, r, "Weekly Tasks", func(task planner.WeeklyTask) {
+	handleUpdate(w, r, "Weekly Tasks", func(task *planner.WeeklyTask) {
 		household.Config.Set("Weekly Tasks", task.Name, "")
 	}, func(updatedTasks []*planner.WeeklyTask) {
 		household.WeeklyTasks = updatedTasks
@@ -126,7 +118,7 @@ func getMonthlyTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateMonthlyTasks(w http.ResponseWriter, r *http.Request) {
-	handleUpdate(w, r, "Monthly Tasks", func(task planner.MonthlyTask) {
+	handleUpdate(w, r, "Monthly Tasks", func(task *planner.MonthlyTask) {
 		household.Config.Set("Monthly Tasks", task.Name, "")
 	}, func(updatedTasks []*planner.MonthlyTask) {
 		household.MonthlyTasks = updatedTasks
