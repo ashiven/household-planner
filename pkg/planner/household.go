@@ -26,8 +26,8 @@ type Household struct {
 	dayOfTheMonth         int
 	currentMemberIndex    int
 	currentMember         *Member
-	remainingWeeklyTasks  []*WeeklyTask
-	remainingMonthlyTasks []*MonthlyTask
+	remainingWeeklyTasks  int
+	remainingMonthlyTasks int
 }
 
 func NewMember(name string, phonenumber string) *Member {
@@ -93,7 +93,7 @@ func NewHousehold() (*Household, error) {
 		dayOfTheMonth:         1,
 		currentMemberIndex:    0,
 		currentMember:         nil,
-		remainingWeeklyTasks:  []*WeeklyTask{},
-		remainingMonthlyTasks: []*MonthlyTask{},
+		remainingWeeklyTasks:  len(weeklyTasks),
+		remainingMonthlyTasks: len(monthlyTasks),
 	}, nil
 }

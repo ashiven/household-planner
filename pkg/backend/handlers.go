@@ -59,10 +59,6 @@ func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string,
 		return
 	}
 
-	// TODO: maybe we are breaking the in-memory representation here such that assignees can no longer be assigned?
-	// Because the program functions just fine when nothing is being updated from the frontend.
-	// This whole thing only started breaking after I updated one task from the daily task section (deleted Lololol daily task) (which updates everything)
-	// which leads me to think that somehow the in-mem representation of household breaks after an update operation from the frontend
 	setConfigMem(updatedOptions)
 
 	household.Config.RemoveSection(section)
@@ -70,7 +66,6 @@ func handleUpdate[T any](w http.ResponseWriter, r *http.Request, section string,
 	for _, option := range updatedOptions {
 		setConfigFile(option)
 	}
-
 	if err := household.Config.SaveWithDelimiter(household.Configfile, ":"); err != nil {
 		http.Error(w, "Error saving config: %v", http.StatusInternalServerError)
 		return

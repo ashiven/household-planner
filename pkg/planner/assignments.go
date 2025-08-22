@@ -1,6 +1,8 @@
 package planner
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 func (household *Household) UpdateCurrentMember() {
 	household.currentMember = household.Members[household.currentMemberIndex]
@@ -32,23 +34,25 @@ func (household *Household) AssignDailyTasks() {
 }
 
 func (household *Household) AssignWeeklyTasks() {
-	if len(household.remainingWeeklyTasks) == 0 {
-		household.remainingWeeklyTasks = append(household.remainingWeeklyTasks, (household.WeeklyTasks)...)
+	if household.remainingWeeklyTasks == 0 {
+		household.remainingWeeklyTasks = len(household.WeeklyTasks)
 	}
 
 	amountAdded := 0
 	weeklyTasksPerDay := max(len(household.WeeklyTasks)/len(household.Members), 1)
-	for amountAdded < weeklyTasksPerDay && len(household.remainingWeeklyTasks) > 0 {
-		task := household.remainingWeeklyTasks[0]
+	for amountAdded < weeklyTasksPerDay && household.remainingWeeklyTasks > 0 {
+		currentTaskIndex := len(household.WeeklyTasks) - household.remainingWeeklyTasks
+		task := household.WeeklyTasks[currentTaskIndex]
 		task.SetAssignee(household.currentMember)
-		household.remainingWeeklyTasks = household.remainingWeeklyTasks[1:]
+
+		household.remainingWeeklyTasks--
 		amountAdded++
 	}
 }
 
 func (household *Household) AssignMonthlyTasks() {
-	if len(household.remainingMonthlyTasks) == 0 {
-		household.remainingMonthlyTasks = append(household.remainingMonthlyTasks, household.MonthlyTasks...)
+	if household.remainingMonthlyTasks == 0 {
+		household.remainingMonthlyTasks = len(household.MonthlyTasks)
 	}
 
 	randomMember := household.Members[rand.Intn(len(household.Members))]
@@ -57,10 +61,12 @@ func (household *Household) AssignMonthlyTasks() {
 	}
 
 	taskIntervalMonth := 30 / len(household.MonthlyTasks)
-	if household.dayOfTheMonth%taskIntervalMonth == 0 {
-		task := household.remainingMonthlyTasks[0]
+	if household.dayOfTheMonth%taskIntervalMonth == 0 && household.remainingMonthlyTasks > 0 {
+		currentTaskIndex := len(household.MonthlyTasks) - household.remainingMonthlyTasks
+		task := household.MonthlyTasks[currentTaskIndex]
 		task.SetAssignee(randomMember)
-		household.remainingMonthlyTasks = household.remainingMonthlyTasks[1:]
+
+		household.remainingMonthlyTasks--
 	}
 
 	household.dayOfTheMonth++

@@ -6,8 +6,6 @@ import (
 	"household-planner/pkg/planner"
 	"os"
 	"time"
-
-	"github.com/kr/pretty"
 )
 
 func main() {
@@ -40,7 +38,7 @@ func main() {
 
 		if debug {
 			fmt.Println("[DEBUG] Starting next day in one minute...: ")
-			fmt.Printf("%# v\n", pretty.Formatter(myHousehold))
+			// fmt.Printf("%# v\n", pretty.Formatter(myHousehold))
 			time.Sleep(1 * time.Minute)
 		} else {
 			planner.WaitUntilNoon()
